@@ -1,0 +1,13 @@
+.next
+node_modules
+dist
+.vercel
+out
+public
+**/*.json
+**/*.md
+yarn.lock
+pnpm-lock.yaml
+.github
+.vscode
+*.config.js
