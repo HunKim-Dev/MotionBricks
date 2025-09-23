@@ -8,6 +8,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Save, Upload } from "lucide-react";
 import LayersPanel from "@/components/workshop/layers-panel";
+import BricksColor from "@/components/workshop/bricks-color";
 
 const AppSidebar = () => {
   const tooltipButtons = [
@@ -32,6 +33,9 @@ const AppSidebar = () => {
         <SidebarGroup />
         <SidebarGroup>
           <LayersPanel />
+        </SidebarGroup>
+        <SidebarGroup>
+          <BricksColor />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
