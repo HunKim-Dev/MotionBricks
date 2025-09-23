@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Save, Upload } from "lucide-react";
+import LayersPanel from "@/components/workshop/layers-panel";
 
 const AppSidebar = () => {
   const tooltipButtons = [
@@ -29,7 +30,9 @@ const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <LayersPanel />
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
