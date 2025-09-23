@@ -34,7 +34,7 @@ const AppSidebar = () => {
         </div>
         <div className="text-xl font-medium">AirBricks</div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="space-y-4.5">
         <SidebarGroup>
           <HandPreview />
           <div className="flex items-center justify-center gap-2 mt-3">
