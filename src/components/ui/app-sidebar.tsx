@@ -16,8 +16,8 @@ import BricksColor from "@/components/workshop/bricks-color";
 
 const AppSidebar = () => {
   const tooltipButtons = [
-    { text: "저장", icon: Save },
-    { text: "불러오기", icon: Upload },
+    { text: "Save", icon: Save },
+    { text: "Load", icon: Upload },
   ];
   return (
     <Sidebar side="right" variant="sidebar">
@@ -32,7 +32,7 @@ const AppSidebar = () => {
             </Tooltip>
           ))}
         </div>
-        <div className="text-xl font-medium">AirBricks</div>
+        <div className="text-2xl font-medium">AirBricks</div>
       </SidebarHeader>
       <SidebarContent className="space-y-4.5">
         <SidebarGroup>
