@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -6,7 +8,9 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { Save, Upload } from "lucide-react";
+import HandPreview from "@/components/workshop/hand-preview";
 import LayersPanel from "@/components/workshop/layers-panel";
 import BricksColor from "@/components/workshop/bricks-color";
 
@@ -28,9 +32,28 @@ const AppSidebar = () => {
             </Tooltip>
           ))}
         </div>
+        <div className="text-xl font-medium">AirBricks</div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
+        <SidebarGroup>
+          <HandPreview />
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => window.dispatchEvent(new Event("camera:start"))}
+            >
+              Cam Start
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => window.dispatchEvent(new Event("camera:stop"))}
+            >
+              Cam Stop
+            </Button>
+          </div>
+        </SidebarGroup>
         <SidebarGroup>
           <LayersPanel />
         </SidebarGroup>
