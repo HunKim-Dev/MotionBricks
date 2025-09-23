@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectTrigger,
@@ -32,15 +31,32 @@ const bricksBoxs = [
 
 const BottomBricksDock = () => {
   const [bricksCategory, setBricksCategory] = useState<BricksCategory>("all");
+  const [searchedBricks, setSearchedBricks] = useState("");
 
   const filteredBricksBoxs = useMemo(() => {
+    const searchedValidation = searchedBricks.trim().toLowerCase();
+
     return bricksBoxs.filter((bricks) => {
-      if (bricksCategory === "all") return true;
-      if (bricksCategory === "full") return bricks.type === "full";
-      if (bricksCategory === "plate") return bricks.type === "plate";
+      if (bricksCategory === "all")
+        return searchedValidation ? bricks.name.includes(searchedValidation) : true;
+
+      if (bricksCategory === "full") {
+        const bricksTypeFull = bricks.type === "full";
+        return (
+          bricksTypeFull && (searchedValidation ? bricks.name.includes(searchedValidation) : true)
+        );
+      }
+
+      if (bricksCategory === "plate") {
+        const bricksTypePlate = bricks.type === "plate";
+        return (
+          bricksTypePlate && (searchedValidation ? bricks.name.includes(searchedValidation) : true)
+        );
+      }
+
       return true;
     });
-  }, [bricksCategory]);
+  }, [bricksCategory, searchedBricks]);
 
   return (
     <div className="fixed bottom-0 left-1/2 z-40 border bg-background w-full max-w-screen-lg -translate-x-1/2 rounded-md">
@@ -59,18 +75,19 @@ const BottomBricksDock = () => {
           </SelectContent>
         </Select>
         <div className="flex-1" />
-        <Input className="h-8 w-[220px]" placeholder="Search" />
-        <Button variant="ghost" size="sm" className="h-8 px-3">
-          Search
-        </Button>
+        <Input
+          className="h-8 w-[220px]"
+          placeholder="Search"
+          value={searchedBricks}
+          onChange={(event) => setSearchedBricks(event.target.value)}
+        />
       </div>
-      <ScrollArea className="flex-1">
-        <div className="flex h-full items-center gap-2 px-3">
-          <div className="w-3 shrink-0 md:w-4" />
+      <ScrollArea className="h-20">
+        <div className="flex h-full items-center justify-center gap-2 px-3">
           {filteredBricksBoxs.map((box) => (
             <div
               key={box.name}
-              className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-md border bg-muted/60"
+              className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-md border bg-muted/60 mt-1"
             >
               <Image
                 src={box.path}
