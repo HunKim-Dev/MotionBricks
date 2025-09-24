@@ -11,23 +11,27 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useState, useMemo } from "react";
+import { BRICK_CATALOG } from "config/brick-config";
 
 type BricksCategory = "all" | "full" | "plate";
 
 const bricksBoxs = [
-  { name: "1x1", path: "/bricks-image/1x1.png", type: "full" },
-  { name: "1x2", path: "/bricks-image/1x2.png", type: "full" },
-  { name: "2x2", path: "/bricks-image/2x2.png", type: "full" },
-  { name: "2x3", path: "/bricks-image/2x3.png", type: "full" },
-  { name: "2x4", path: "/bricks-image/2x4.png", type: "full" },
-  { name: "2x6", path: "/bricks-image/2x6.png", type: "full" },
-  { name: "half1x1", path: "/bricks-image/half1x1.png", type: "plate" },
-  { name: "half1x2", path: "/bricks-image/half1x2.png", type: "plate" },
-  { name: "half2x2", path: "/bricks-image/half2x2.png", type: "plate" },
-  { name: "half2x3", path: "/bricks-image/half2x3.png", type: "plate" },
-  { name: "half2x4", path: "/bricks-image/half2x4.png", type: "plate" },
-  { name: "half2x6", path: "/bricks-image/half2x6.png", type: "plate" },
+  { name: "1x1 Brick", path: "/bricks-image/1x1.png", type: "full" },
+  { name: "1x2 Brick", path: "/bricks-image/1x2.png", type: "full" },
+  { name: "2x2 Brick", path: "/bricks-image/2x2.png", type: "full" },
+  { name: "2x3 Brick", path: "/bricks-image/2x3.png", type: "full" },
+  { name: "2x4 Brick", path: "/bricks-image/2x4.png", type: "full" },
+  { name: "2x6 Brick", path: "/bricks-image/2x6.png", type: "full" },
+
+  { name: "1x1 Plate", path: "/bricks-image/half1x1.png", type: "plate" },
+  { name: "1x2 Plate", path: "/bricks-image/half1x2.png", type: "plate" },
+  { name: "2x2 Plate", path: "/bricks-image/half2x2.png", type: "plate" },
+  { name: "2x3 Plate", path: "/bricks-image/half2x3.png", type: "plate" },
+  { name: "2x4 Plate", path: "/bricks-image/half2x4.png", type: "plate" },
+  { name: "2x6 Plate", path: "/bricks-image/half2x6.png", type: "plate" },
 ];
+
+const CATALOG_BY_NAME = new Map(BRICK_CATALOG.map((item) => [item.name, item]));
 
 const BottomBricksDock = () => {
   const [bricksCategory, setBricksCategory] = useState<BricksCategory>("all");
@@ -85,9 +89,13 @@ const BottomBricksDock = () => {
       <ScrollArea className="h-20">
         <div className="flex h-full items-center justify-center gap-2 px-3">
           {filteredBricksBoxs.map((box) => (
-            <div
+            <button
               key={box.name}
               className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-md border bg-muted/60 mt-1"
+              onClick={() => {
+                const item = CATALOG_BY_NAME.get(box.name);
+                window.dispatchEvent(new CustomEvent("spawn-brick", { detail: item }));
+              }}
             >
               <Image
                 src={box.path}
@@ -97,7 +105,7 @@ const BottomBricksDock = () => {
                 className="object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-3 bg-background/70" />
-            </div>
+            </button>
           ))}
           <div className="w-3 shrink-0 md:w-4" />
         </div>
