@@ -7,7 +7,7 @@ import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDraw
 import * as THREE from "three";
 import { LDRAW_PATH } from "config/brick-config";
 
-type SpawnBrickEvent = CustomEvent<{ path: string }>;
+type SpawnBrickEvent = { name: string; path: string };
 
 const LDrawModel = () => {
   const { scene } = useThree();
@@ -18,8 +18,8 @@ const LDrawModel = () => {
     loader.setConditionalLineMaterial(LDrawConditionalLineMaterial);
     loader.setPartsLibraryPath(LDRAW_PATH);
 
-    const onSpawn = (event: SpawnBrickEvent) => {
-      const { path } = event.detail;
+    const onSpawn = (event: Event) => {
+      const { path, name } = (event as CustomEvent<SpawnBrickEvent>).detail;
 
       loader.load(path, (group) => {
         group.scale.set(0.5, 0.5, 0.5);
@@ -31,10 +31,16 @@ const LDrawModel = () => {
           group.position.y -= box.min.y;
         }
         scene.add(group);
+
+        window.dispatchEvent(
+          new CustomEvent("layer-added", {
+            detail: { uuid: group.uuid, name },
+          })
+        );
       });
     };
-    window.addEventListener("spawn-brick", onSpawn as EventListener);
-    return () => window.removeEventListener("spawn-brick", onSpawn as EventListener);
+    window.addEventListener("spawn-brick", onSpawn);
+    return () => window.removeEventListener("spawn-brick", onSpawn);
   }, [scene]);
 
   return null;
