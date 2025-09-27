@@ -23,6 +23,28 @@ export const BRICK_CATALOG: CatalogItem[] = [
   { id: "3795", name: "2x6 Plate", kind: "plate", path: "/ldraw/parts/3795.dat" },
 ];
 
+export type BrickImage = {
+  name: string;
+  path: string;
+  type: string;
+};
+
+export const BRICK_BOX_IMAGES: BrickImage[] = [
+  { name: "1x1 Brick", path: "/bricks-image/1x1.png", type: "full" },
+  { name: "1x2 Brick", path: "/bricks-image/1x2.png", type: "full" },
+  { name: "2x2 Brick", path: "/bricks-image/2x2.png", type: "full" },
+  { name: "2x3 Brick", path: "/bricks-image/2x3.png", type: "full" },
+  { name: "2x4 Brick", path: "/bricks-image/2x4.png", type: "full" },
+  { name: "2x6 Brick", path: "/bricks-image/2x6.png", type: "full" },
+
+  { name: "1x1 Plate", path: "/bricks-image/half1x1.png", type: "plate" },
+  { name: "1x2 Plate", path: "/bricks-image/half1x2.png", type: "plate" },
+  { name: "2x2 Plate", path: "/bricks-image/half2x2.png", type: "plate" },
+  { name: "2x3 Plate", path: "/bricks-image/half2x3.png", type: "plate" },
+  { name: "2x4 Plate", path: "/bricks-image/half2x4.png", type: "plate" },
+  { name: "2x6 Plate", path: "/bricks-image/half2x6.png", type: "plate" },
+];
+
 export const COLOR_PALETTE = [
   { name: "Turquoise", hex: "#a7f3d0" },
   { name: "Sky Blue", hex: "#bfdbfe" },
