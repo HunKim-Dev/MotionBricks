@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useState, useMemo } from "react";
-import { BRICK_CATALOG } from "config/brick-config";
+import { BRICK_CATALOG, BRICK_BAR_IMAGE_SIZE } from "config/brick-config";
 
 type BricksCategory = "all" | "full" | "plate";
 
@@ -100,8 +100,8 @@ const BottomBricksDock = () => {
               <Image
                 src={box.path}
                 alt={box.name}
-                width={48}
-                height={48}
+                width={BRICK_BAR_IMAGE_SIZE}
+                height={BRICK_BAR_IMAGE_SIZE}
                 className="object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-3 bg-background/70" />
