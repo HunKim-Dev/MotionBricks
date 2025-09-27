@@ -64,3 +64,5 @@ export const BRICK_BAR_IMAGE_SIZE = 48 as number;
 export const BRICK_RENDER_SCALE = [0.5, 0.5, 0.5] as [number, number, number];
 
 export const BRICK_RENDER_POSITION = [0, 0, 0] as [number, number, number];
+
+export const BRICK_LIGHT = 0.7 as number;
