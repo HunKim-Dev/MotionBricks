@@ -55,7 +55,18 @@ export const BRICK_RENDER_SCALE = [0.5, 0.5, 0.5] as [number, number, number];
 
 export const BRICK_RENDER_POSITION = [0, 0, 0] as [number, number, number];
 
-export const BRICK_LIGHT = 0.7 as number;
+export const BRICK_AMBIENT_LIGHT = {
+  intensity: 0.7,
+};
+
+export const BRICK_DIRECTIONAL_LIGHT = {
+  intensity: 1,
+  position: [5, 8, 5] as [number, number, number],
+};
+
+export const BRICK_HEMISPHERE_LIGHT = {
+  intensity: 0.5,
+};
 
 export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", "#83bcfc"] as [
   string,
