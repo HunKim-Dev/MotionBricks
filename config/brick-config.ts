@@ -45,16 +45,6 @@ export const BRICK_BOX_IMAGES: BrickImage[] = [
   { name: "2x6 Plate", path: "/bricks-image/half2x6.png", type: "plate" },
 ];
 
-export const COLOR_PALETTE = [
-  { name: "Turquoise", hex: "#a7f3d0" },
-  { name: "Sky Blue", hex: "#bfdbfe" },
-  { name: "Yellow", hex: "#fde68a" },
-  { name: "Coral", hex: "#fecaca" },
-  { name: "Lavender", hex: "#e9d5ff" },
-] as const;
-
-export type ColorHex = (typeof COLOR_PALETTE)[number]["hex"];
-
 export const CAMERA_LOCATION = { position: [140, 120, 220] as [number, number, number], fov: 45 };
 
 export const GRID_SIZE = [600, 60] as [number, number];
@@ -67,7 +57,7 @@ export const BRICK_RENDER_POSITION = [0, 0, 0] as [number, number, number];
 
 export const BRICK_LIGHT = 0.7 as number;
 
-export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fde68a", "#fecaca", "#e9d5ff", "#bfdbfe"] as [
+export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", "#83bcfc"] as [
   string,
   string,
   string,
