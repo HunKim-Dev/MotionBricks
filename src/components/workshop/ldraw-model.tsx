@@ -5,7 +5,7 @@ import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
 import { useThree } from "@react-three/fiber";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
 import * as THREE from "three";
-import { LDRAW_PATH } from "config/brick-config";
+import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
 
 type SpawnBrickEvent = { name: string; path: string };
 
@@ -22,8 +22,8 @@ const LDrawModel = () => {
       const { path, name } = (event as CustomEvent<SpawnBrickEvent>).detail;
 
       loader.load(path, (group) => {
-        group.scale.set(0.5, 0.5, 0.5);
-        group.position.set(0, 0, 0);
+        group.scale.set(...BRICK_RENDER_SCALE);
+        group.position.set(...BRICK_RENDER_POSITION);
         group.rotateX(Math.PI);
 
         const box = new THREE.Box3().setFromObject(group);
