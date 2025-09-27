@@ -38,3 +38,7 @@ export const CAMERA_LOCATION = { position: [140, 120, 220] as [number, number, n
 export const GRID_SIZE = [600, 60] as [number, number];
 
 export const BRICK_BAR_IMAGE_SIZE = 48 as number;
+
+export const BRICK_RENDER_SCALE = [0.5, 0.5, 0.5] as [number, number, number];
+
+export const BRICK_RENDER_POSITION = [0, 0, 0] as [number, number, number];
