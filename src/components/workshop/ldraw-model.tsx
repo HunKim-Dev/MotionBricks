@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
-import { useThree } from "@react-three/fiber";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
 import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
@@ -15,10 +14,9 @@ const setSelectedBrick = (uuid: string | null) => {
 
 const LDrawModel = () => {
   const [loadedGroup, setLoadedGroup] = useState<THREE.Group | null>(null);
-  const { scene } = useThree();
   const selectedObjectRef = useRef<THREE.Object3D | null>(null);
 
-  const setObjectOpacity = (object: THREE.Object3D, alpha: number) => {
+  const setObjectOpacity = useCallback((object: THREE.Object3D, alpha: number) => {
     object.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -29,7 +27,7 @@ const LDrawModel = () => {
         singleMaterial.needsUpdate = true;
       }
     });
-  };
+  }, []);
 
   useEffect(() => {
     const loader = new LDrawLoader();
@@ -61,7 +59,7 @@ const LDrawModel = () => {
 
     window.addEventListener("spawn-brick", onSpawn);
     return () => window.removeEventListener("spawn-brick", onSpawn);
-  }, [scene]);
+  }, []);
 
   const handlePick = (event: { delta: number; object: THREE.Object3D }) => {
     if (event.delta > 8) return;
@@ -79,34 +77,26 @@ const LDrawModel = () => {
 
     if (!isPickable) return;
 
-    const ObjectOpacityChange: THREE.Object3D = loadedGroup ?? clickedThreeObject;
+    const objectOpacityChange: THREE.Object3D = loadedGroup ?? clickedThreeObject;
 
-    setObjectOpacity(ObjectOpacityChange, 0.5);
-    selectedObjectRef.current = ObjectOpacityChange;
+    setObjectOpacity(objectOpacityChange, 0.5);
+    selectedObjectRef.current = objectOpacityChange;
 
-    setSelectedBrick(ObjectOpacityChange.uuid);
+    setSelectedBrick(objectOpacityChange.uuid);
   };
 
-  const handleMiss = () => {
+  const handleMiss = useCallback(() => {
     if (selectedObjectRef.current) {
       setObjectOpacity(selectedObjectRef.current, 1);
       selectedObjectRef.current = null;
     }
     setSelectedBrick(null);
-  };
+  }, [setObjectOpacity]);
 
   useEffect(() => {
-    const onMiss = () => {
-      if (selectedObjectRef.current) {
-        setObjectOpacity(selectedObjectRef.current, 1);
-        selectedObjectRef.current = null;
-      }
-      setSelectedBrick(null);
-    };
-
-    window.addEventListener("handle-missed", onMiss);
-    return () => window.removeEventListener("handle-missed", onMiss);
-  }, []);
+    window.addEventListener("handle-missed", handleMiss);
+    return () => window.removeEventListener("handle-missed", handleMiss);
+  }, [handleMiss]);
 
   return loadedGroup ? (
     <primitive object={loadedGroup} onPointerDown={handlePick} onPointerMissed={handleMiss} />
