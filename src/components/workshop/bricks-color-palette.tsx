@@ -6,7 +6,7 @@ type BricksColorProps = {
   onPick?: (hex: string) => void;
 };
 
-const BricksColor = ({ onPick }: BricksColorProps) => {
+const BricksColorPallete = ({ onPick }: BricksColorProps) => {
   return (
     <div className="text-sm font-medium">
       <div className="mb-2">Bircks Colors</div>
@@ -28,4 +28,4 @@ const BricksColor = ({ onPick }: BricksColorProps) => {
   );
 };
 
-export default BricksColor;
+export default BricksColorPallete;
