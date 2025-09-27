@@ -16,6 +16,8 @@ const WorkShopPage = () => {
       >
         <gridHelper args={GRID_SIZE} />
         <ambientLight intensity={BRICK_LIGHT} />
+        <directionalLight intensity={1} position={[5, 8, 5]} />
+        <hemisphereLight intensity={0.5} />
         <LDrawModel />
         <OrbitControls enableDamping />
       </Canvas>
