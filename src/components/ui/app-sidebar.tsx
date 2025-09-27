@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Save, Upload } from "lucide-react";
 import HandPreview from "@/components/workshop/hand-preview";
 import LayersPanel from "@/components/workshop/layers-panel";
-import BricksColor from "@/components/workshop/bricks-color";
+import BricksColorPallete from "@/components/workshop/bricks-color-palette";
 
 const AppSidebar = () => {
   const tooltipButtons = [
@@ -58,7 +58,7 @@ const AppSidebar = () => {
           <LayersPanel />
         </SidebarGroup>
         <SidebarGroup>
-          <BricksColor />
+          <BricksColorPallete />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
