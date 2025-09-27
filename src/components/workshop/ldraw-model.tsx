@@ -5,6 +5,7 @@ import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
 import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
+import BrickColorBinding from "@/components/workshop/brick-color-binding";
 
 type SpawnBrickEvent = { name: string; path: string };
 
@@ -98,9 +99,15 @@ const LDrawModel = () => {
     return () => window.removeEventListener("handle-missed", handleMiss);
   }, [handleMiss]);
 
-  return loadedGroup ? (
-    <primitive object={loadedGroup} onPointerDown={handlePick} onPointerMissed={handleMiss} />
-  ) : null;
+  return (
+    <>
+      {loadedGroup ? (
+        <primitive object={loadedGroup} onPointerDown={handlePick} onPointerMissed={handleMiss} />
+      ) : null}
+
+      <BrickColorBinding selectedRef={selectedObjectRef} />
+    </>
+  );
 };
 
 export default LDrawModel;
