@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
 import { useThree } from "@react-three/fiber";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
@@ -9,8 +9,27 @@ import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/br
 
 type SpawnBrickEvent = { name: string; path: string };
 
+const setSelectedBrick = (uuid: string | null) => {
+  window.dispatchEvent(new CustomEvent("ui/brick/highlight", { detail: uuid }));
+};
+
 const LDrawModel = () => {
+  const [loadedGroup, setLoadedGroup] = useState<THREE.Group | null>(null);
   const { scene } = useThree();
+  const selectedObjectRef = useRef<THREE.Object3D | null>(null);
+
+  const setObjectOpacity = (object: THREE.Object3D, alpha: number) => {
+    object.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        const singleMaterial = mesh.material as THREE.Material;
+
+        singleMaterial.transparent = alpha < 1;
+        singleMaterial.opacity = alpha;
+        singleMaterial.needsUpdate = true;
+      }
+    });
+  };
 
   useEffect(() => {
     const loader = new LDrawLoader();
@@ -30,7 +49,7 @@ const LDrawModel = () => {
         if (isFinite(box.min.y) && box.min.y !== 0) {
           group.position.y -= box.min.y;
         }
-        scene.add(group);
+        setLoadedGroup(group);
 
         window.dispatchEvent(
           new CustomEvent("layer-added", {
@@ -39,11 +58,59 @@ const LDrawModel = () => {
         );
       });
     };
+
     window.addEventListener("spawn-brick", onSpawn);
     return () => window.removeEventListener("spawn-brick", onSpawn);
   }, [scene]);
 
-  return null;
+  const handlePick = (event: { delta: number; object: THREE.Object3D }) => {
+    if (event.delta > 8) return;
+
+    if (selectedObjectRef.current) {
+      setObjectOpacity(selectedObjectRef.current, 1);
+      selectedObjectRef.current = null;
+    }
+
+    const clickedThreeObject = event.object;
+    const isPickable =
+      clickedThreeObject instanceof THREE.Mesh ||
+      clickedThreeObject instanceof THREE.LineSegments ||
+      clickedThreeObject instanceof THREE.Line;
+
+    if (!isPickable) return;
+
+    const ObjectOpacityChange: THREE.Object3D = loadedGroup ?? clickedThreeObject;
+
+    setObjectOpacity(ObjectOpacityChange, 0.5);
+    selectedObjectRef.current = ObjectOpacityChange;
+
+    setSelectedBrick(ObjectOpacityChange.uuid);
+  };
+
+  const handleMiss = () => {
+    if (selectedObjectRef.current) {
+      setObjectOpacity(selectedObjectRef.current, 1);
+      selectedObjectRef.current = null;
+    }
+    setSelectedBrick(null);
+  };
+
+  useEffect(() => {
+    const onMiss = () => {
+      if (selectedObjectRef.current) {
+        setObjectOpacity(selectedObjectRef.current, 1);
+        selectedObjectRef.current = null;
+      }
+      setSelectedBrick(null);
+    };
+
+    window.addEventListener("handle-missed", onMiss);
+    return () => window.removeEventListener("handle-missed", onMiss);
+  }, []);
+
+  return loadedGroup ? (
+    <primitive object={loadedGroup} onPointerDown={handlePick} onPointerMissed={handleMiss} />
+  ) : null;
 };
 
 export default LDrawModel;
