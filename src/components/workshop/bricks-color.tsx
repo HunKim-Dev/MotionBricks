@@ -17,7 +17,10 @@ const BricksColor = ({ onPick }: BricksColorProps) => {
             aria-label={`color ${color}`}
             className="h-7 w-7 rounded-md border shadow-sm hover:scale-120 transition"
             style={{ backgroundColor: color }}
-            onClick={() => onPick?.(color)}
+            onClick={() => {
+              onPick?.(color);
+              window.dispatchEvent(new CustomEvent("brick-color-change", { detail: color }));
+            }}
           />
         ))}
       </div>
