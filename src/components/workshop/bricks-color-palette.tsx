@@ -3,7 +3,7 @@
 import { BRICK_COLOR_PALETTE } from "config/brick-config";
 
 type BricksColorProps = {
-  onPick?: (hex: string) => void;
+  onPick?: (hexColor: string) => void;
 };
 
 const BricksColorPallete = ({ onPick }: BricksColorProps) => {
@@ -11,15 +11,15 @@ const BricksColorPallete = ({ onPick }: BricksColorProps) => {
     <div className="text-sm font-medium">
       <div className="mb-2">Bircks Colors</div>
       <div className="flex flex-wrap gap-2 rounded-md border p-2 bg-background items-center justify-center">
-        {BRICK_COLOR_PALETTE.map((color) => (
+        {BRICK_COLOR_PALETTE.map((hexColor) => (
           <button
-            key={color}
-            aria-label={`color ${color}`}
+            key={hexColor}
+            aria-label={`color ${hexColor}`}
             className="h-7 w-7 rounded-md border shadow-sm hover:scale-120 transition"
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: hexColor }}
             onClick={() => {
-              onPick?.(color);
-              window.dispatchEvent(new CustomEvent("brick-color-change", { detail: color }));
+              onPick?.(hexColor);
+              window.dispatchEvent(new CustomEvent("brick-color-change", { detail: hexColor }));
             }}
           />
         ))}
