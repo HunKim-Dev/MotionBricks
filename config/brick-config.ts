@@ -66,3 +66,11 @@ export const BRICK_RENDER_SCALE = [0.5, 0.5, 0.5] as [number, number, number];
 export const BRICK_RENDER_POSITION = [0, 0, 0] as [number, number, number];
 
 export const BRICK_LIGHT = 0.7 as number;
+
+export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fde68a", "#fecaca", "#e9d5ff", "#bfdbfe"] as [
+  string,
+  string,
+  string,
+  string,
+  string,
+];
