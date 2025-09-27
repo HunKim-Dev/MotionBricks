@@ -36,3 +36,5 @@ export type ColorHex = (typeof COLOR_PALETTE)[number]["hex"];
 export const CAMERA_LOCATION = { position: [140, 120, 220] as [number, number, number], fov: 45 };
 
 export const GRID_SIZE = [600, 60] as [number, number];
+
+export const BRICK_BAR_IMAGE_SIZE = 48 as number;
