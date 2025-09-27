@@ -11,25 +11,9 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useState, useMemo } from "react";
-import { BRICK_CATALOG } from "config/brick-config";
+import { BRICK_CATALOG, BRICK_BAR_IMAGE_SIZE, BRICK_BOX_IMAGES } from "config/brick-config";
 
 type BricksCategory = "all" | "full" | "plate";
-
-const bricksBoxs = [
-  { name: "1x1 Brick", path: "/bricks-image/1x1.png", type: "full" },
-  { name: "1x2 Brick", path: "/bricks-image/1x2.png", type: "full" },
-  { name: "2x2 Brick", path: "/bricks-image/2x2.png", type: "full" },
-  { name: "2x3 Brick", path: "/bricks-image/2x3.png", type: "full" },
-  { name: "2x4 Brick", path: "/bricks-image/2x4.png", type: "full" },
-  { name: "2x6 Brick", path: "/bricks-image/2x6.png", type: "full" },
-
-  { name: "1x1 Plate", path: "/bricks-image/half1x1.png", type: "plate" },
-  { name: "1x2 Plate", path: "/bricks-image/half1x2.png", type: "plate" },
-  { name: "2x2 Plate", path: "/bricks-image/half2x2.png", type: "plate" },
-  { name: "2x3 Plate", path: "/bricks-image/half2x3.png", type: "plate" },
-  { name: "2x4 Plate", path: "/bricks-image/half2x4.png", type: "plate" },
-  { name: "2x6 Plate", path: "/bricks-image/half2x6.png", type: "plate" },
-];
 
 const CATALOG_BY_NAME = new Map(BRICK_CATALOG.map((item) => [item.name, item]));
 
@@ -40,7 +24,7 @@ const BottomBricksDock = () => {
   const filteredBricksBoxs = useMemo(() => {
     const searchedValidation = searchedBricks.trim().toLowerCase();
 
-    return bricksBoxs.filter((bricks) => {
+    return BRICK_BOX_IMAGES.filter((bricks) => {
       if (bricksCategory === "all")
         return searchedValidation ? bricks.name.includes(searchedValidation) : true;
 
@@ -100,8 +84,8 @@ const BottomBricksDock = () => {
               <Image
                 src={box.path}
                 alt={box.name}
-                width={48}
-                height={48}
+                width={BRICK_BAR_IMAGE_SIZE}
+                height={BRICK_BAR_IMAGE_SIZE}
                 className="object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-3 bg-background/70" />

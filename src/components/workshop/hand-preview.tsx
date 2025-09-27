@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { CAMERA_START_ERROR } from "config/app-config";
 
 const HandPreview = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -20,7 +21,7 @@ const HandPreview = () => {
         await videoRef.current.play();
       }
     } catch (error) {
-      console.error("카메라 시작 실패:", error);
+      console.error(CAMERA_START_ERROR, error);
     }
   };
 
