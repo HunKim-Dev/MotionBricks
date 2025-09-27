@@ -10,6 +10,7 @@ const WorkShopPage = () => {
     <div style={{ width: "100%", height: "100vh" }}>
       <Canvas camera={CAMERA_LOCATION}>
         <gridHelper args={GRID_SIZE} />
+        <ambientLight intensity={0.7} />
         <LDrawModel />
         <OrbitControls enableDamping />
       </Canvas>
