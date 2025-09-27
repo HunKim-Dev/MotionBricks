@@ -3,7 +3,13 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import LDrawModel from "@/components/workshop/ldraw-model";
-import { CAMERA_LOCATION, GRID_SIZE, BRICK_LIGHT } from "config/brick-config";
+import {
+  CAMERA_LOCATION,
+  GRID_SIZE,
+  BRICK_AMBIENT_LIGHT,
+  BRICK_DIRECTIONAL_LIGHT,
+  BRICK_HEMISPHERE_LIGHT,
+} from "config/brick-config";
 
 const WorkShopPage = () => {
   return (
@@ -15,9 +21,9 @@ const WorkShopPage = () => {
         }}
       >
         <gridHelper args={GRID_SIZE} />
-        <ambientLight intensity={BRICK_LIGHT} />
-        <directionalLight intensity={1} position={[5, 8, 5]} />
-        <hemisphereLight intensity={0.5} />
+        <ambientLight {...BRICK_AMBIENT_LIGHT} />
+        <directionalLight {...BRICK_DIRECTIONAL_LIGHT} />
+        <hemisphereLight {...BRICK_HEMISPHERE_LIGHT} />
         <LDrawModel />
         <OrbitControls enableDamping />
       </Canvas>
