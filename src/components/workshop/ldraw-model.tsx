@@ -6,8 +6,10 @@ import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDraw
 import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
 import BrickColorBinding from "@/components/workshop/brick-color-binding";
+import { useThree } from "@react-three/fiber";
+import { useBrickPartsStore } from "@/store/brick-parts";
 
-type SpawnBrickEvent = { name: string; path: string };
+type SpawnBrickEvent = { id: string; name: string; path: string };
 
 const setSelectedBrick = (uuid: string | null) => {
   window.dispatchEvent(new CustomEvent("ui/brick/highlight", { detail: uuid }));
@@ -16,6 +18,11 @@ const setSelectedBrick = (uuid: string | null) => {
 const LDrawModel = () => {
   const [loadedGroup, setLoadedGroup] = useState<THREE.Group | null>(null);
   const selectedObjectRef = useRef<THREE.Object3D | null>(null);
+  const { scene } = useThree();
+
+  const addPart = useBrickPartsStore((state) => state.addPart);
+  const deletePart = useBrickPartsStore((state) => state.deletePart);
+  const selectPart = useBrickPartsStore((state) => state.selectPart);
 
   const setObjectOpacity = useCallback((object: THREE.Object3D, alpha: number) => {
     object.traverse((child) => {
@@ -37,7 +44,7 @@ const LDrawModel = () => {
     loader.setPartsLibraryPath(LDRAW_PATH);
 
     const onSpawn = (event: Event) => {
-      const { path, name } = (event as CustomEvent<SpawnBrickEvent>).detail;
+      const { path, name, id } = (event as CustomEvent<SpawnBrickEvent>).detail;
 
       loader.load(path, (group) => {
         group.scale.set(...BRICK_RENDER_SCALE);
@@ -50,6 +57,8 @@ const LDrawModel = () => {
         }
         setLoadedGroup(group);
 
+        addPart({ id, name, uuid: group.uuid });
+
         window.dispatchEvent(
           new CustomEvent("layer-added", {
             detail: { uuid: group.uuid, name },
@@ -60,7 +69,7 @@ const LDrawModel = () => {
 
     window.addEventListener("spawn-brick", onSpawn);
     return () => window.removeEventListener("spawn-brick", onSpawn);
-  }, []);
+  }, [addPart]);
 
   const handlePick = (event: { delta: number; object: THREE.Object3D }) => {
     if (event.delta > 8) return;
@@ -84,6 +93,7 @@ const LDrawModel = () => {
     selectedObjectRef.current = objectOpacityChange;
 
     setSelectedBrick(objectOpacityChange.uuid);
+    selectPart(objectOpacityChange.uuid);
   };
 
   const handleMiss = useCallback(() => {
@@ -92,12 +102,42 @@ const LDrawModel = () => {
       selectedObjectRef.current = null;
     }
     setSelectedBrick(null);
-  }, [setObjectOpacity]);
+    selectPart(null);
+  }, [setObjectOpacity, selectPart]);
 
   useEffect(() => {
     window.addEventListener("handle-missed", handleMiss);
     return () => window.removeEventListener("handle-missed", handleMiss);
   }, [handleMiss]);
+
+  useEffect(() => {
+    const deletedBrick = (event: Event) => {
+      const { uuid: deletedBrickUuid } = (event as CustomEvent<{ uuid: string }>).detail;
+      if (!deletedBrickUuid) return;
+
+      const sceneObject =
+        (scene.getObjectByProperty("uuid", deletedBrickUuid) as THREE.Object3D | null) ??
+        (loadedGroup?.uuid === deletedBrickUuid ? loadedGroup : null);
+      if (!sceneObject) return;
+
+      scene.remove(sceneObject);
+
+      if (loadedGroup?.uuid === deletedBrickUuid) {
+        setLoadedGroup(null);
+      }
+
+      setSelectedBrick(null);
+      selectPart(null);
+      deletePart(deletedBrickUuid);
+
+      window.dispatchEvent(
+        new CustomEvent("layer-deleted", { detail: { uuid: deletedBrickUuid } })
+      );
+    };
+
+    window.addEventListener("delete-brick", deletedBrick);
+    return () => window.removeEventListener("delete-brick", deletedBrick);
+  }, [loadedGroup, deletePart, selectPart, scene]);
 
   return (
     <>
