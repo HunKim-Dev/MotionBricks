@@ -16,7 +16,7 @@ const setSelectedBrick = (uuid: string | null) => {
 };
 
 const LDrawModel = () => {
-  const [loadedGroup, setLoadedGroup] = useState<THREE.Group | null>(null);
+  const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
   const selectedObjectRef = useRef<THREE.Object3D | null>(null);
   const { scene } = useThree();
 
@@ -55,7 +55,7 @@ const LDrawModel = () => {
         if (isFinite(box.min.y) && box.min.y !== 0) {
           group.position.y -= box.min.y;
         }
-        setLoadedGroup(group);
+        setLoadedGroups((prev) => [...prev, group]);
 
         addPart({ id, name, uuid: group.uuid });
 
@@ -71,7 +71,11 @@ const LDrawModel = () => {
     return () => window.removeEventListener("spawn-brick", onSpawn);
   }, [addPart]);
 
-  const handlePick = (event: { delta: number; object: THREE.Object3D }) => {
+  const handlePick = (event: {
+    delta: number;
+    object: THREE.Object3D;
+    eventObject?: THREE.Object3D;
+  }) => {
     if (event.delta > 8) return;
 
     if (selectedObjectRef.current) {
@@ -87,7 +91,12 @@ const LDrawModel = () => {
 
     if (!isPickable) return;
 
-    const objectOpacityChange: THREE.Object3D = loadedGroup ?? clickedThreeObject;
+    if (selectedObjectRef.current) {
+      setObjectOpacity(selectedObjectRef.current, 1);
+      selectedObjectRef.current = null;
+    }
+
+    const objectOpacityChange: THREE.Object3D = event.eventObject ?? event.object;
 
     setObjectOpacity(objectOpacityChange, 0.5);
     selectedObjectRef.current = objectOpacityChange;
@@ -115,15 +124,18 @@ const LDrawModel = () => {
       const { uuid: deletedBrickUuid } = (event as CustomEvent<{ uuid: string }>).detail;
       if (!deletedBrickUuid) return;
 
-      const sceneObject =
-        (scene.getObjectByProperty("uuid", deletedBrickUuid) as THREE.Object3D | null) ??
-        (loadedGroup?.uuid === deletedBrickUuid ? loadedGroup : null);
+      const sceneObject = scene.getObjectByProperty(
+        "uuid",
+        deletedBrickUuid
+      ) as THREE.Object3D | null;
       if (!sceneObject) return;
 
       scene.remove(sceneObject);
 
-      if (loadedGroup?.uuid === deletedBrickUuid) {
-        setLoadedGroup(null);
+      setLoadedGroups((prev) => prev.filter((g) => g.uuid !== deletedBrickUuid));
+
+      if (selectedObjectRef.current?.uuid === deletedBrickUuid) {
+        selectedObjectRef.current = null;
       }
 
       setSelectedBrick(null);
@@ -137,13 +149,18 @@ const LDrawModel = () => {
 
     window.addEventListener("delete-brick", deletedBrick);
     return () => window.removeEventListener("delete-brick", deletedBrick);
-  }, [loadedGroup, deletePart, selectPart, scene]);
+  }, [loadedGroups, deletePart, selectPart, scene]);
 
   return (
     <>
-      {loadedGroup ? (
-        <primitive object={loadedGroup} onPointerDown={handlePick} onPointerMissed={handleMiss} />
-      ) : null}
+      {loadedGroups.map((group) => (
+        <primitive
+          key={group.uuid}
+          object={group}
+          onPointerDown={handlePick}
+          onPointerMissed={handleMiss}
+        />
+      ))}
 
       <BrickColorBinding selectedRef={selectedObjectRef} />
     </>
