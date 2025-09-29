@@ -31,6 +31,21 @@ const LayersPanel = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const deletedLayer = (event: Event) => {
+      const { uuid } = (event as CustomEvent<{ uuid: string }>).detail;
+      if (!uuid) return;
+
+      setLayers((prev) => prev.filter((l) => l.uuid !== uuid));
+      setSelectedId((prev) => (prev === uuid ? null : prev));
+    };
+
+    window.addEventListener("layer-deleted", deletedLayer);
+    return () => {
+      window.removeEventListener("layer-deleted", deletedLayer);
+    };
+  }, []);
+
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex items-center justify-between px-2">
