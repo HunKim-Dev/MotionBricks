@@ -10,7 +10,7 @@ const DeleteBrickButton = () => {
 
   const deleteClick = () => {
     if (!selectedBrickUuid) return;
-    window.dispatchEvent(new CustomEvent("delete-brick", { detail: selectedBrickUuid }));
+    window.dispatchEvent(new CustomEvent("delete-brick", { detail: { uuid: selectedBrickUuid } }));
   };
   return (
     <div className="flex items-center justify-end px-2 mt-2">
