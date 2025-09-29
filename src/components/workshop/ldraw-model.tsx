@@ -91,11 +91,6 @@ const LDrawModel = () => {
 
     if (!isPickable) return;
 
-    if (selectedObjectRef.current) {
-      setObjectOpacity(selectedObjectRef.current, 1);
-      selectedObjectRef.current = null;
-    }
-
     const objectOpacityChange: THREE.Object3D = event.eventObject ?? event.object;
 
     setObjectOpacity(objectOpacityChange, 0.5);
