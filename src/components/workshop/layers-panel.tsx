@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DeleteBrickButton from "../ui/delete-button";
+import { useBrickPartsStore } from "@/store/brick-parts";
 
 type Layer = {
   uuid: string;
@@ -12,11 +13,16 @@ type Layer = {
 const LayersPanel = () => {
   const [layers, setLayers] = useState<Layer[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selectedPart = useBrickPartsStore((state) => state.selectPart);
 
-  const selectLayer = useCallback((uuid: string) => {
-    setSelectedId(uuid);
-    window.dispatchEvent(new CustomEvent("select-layer", { detail: { uuid } }));
-  }, []);
+  const selectLayer = useCallback(
+    (uuid: string) => {
+      setSelectedId(uuid);
+      selectedPart(uuid);
+      window.dispatchEvent(new CustomEvent("select-layer", { detail: { uuid } }));
+    },
+    [selectedPart]
+  );
 
   useEffect(() => {
     const addedLayer = (event: Event) => {
