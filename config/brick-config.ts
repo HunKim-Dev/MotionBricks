@@ -77,3 +77,5 @@ export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", 
 ];
 
 export const STUD_UNIT = 1 * BRICK_RENDER_SCALE[0];
+
+export const HANDLE_SIZE = 1.5;
