@@ -8,6 +8,8 @@ import { useBrickPartsStore } from "@/store/brick-parts";
 import useBrickSelection from "@/hooks/use-brick-selection";
 import useBrickDeletion from "@/hooks/use-brick-deletion";
 import useBrickSpawn from "@/hooks/use-brick-spawn";
+import BrickMoveControls from "./brick-move-controls";
+import { STUD_UNIT } from "config/brick-config";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -17,7 +19,8 @@ const LDrawModel = () => {
   const deletePart = useBrickPartsStore((state) => state.deletePart);
   const selectPart = useBrickPartsStore((state) => state.selectPart);
 
-  const { selectedObjectRef, handlePick, handleMiss } = useBrickSelection(selectPart);
+  const { selectedObject, selectedObjectRef, handlePick, handleMiss } =
+    useBrickSelection(selectPart);
 
   useBrickSpawn({ setLoadedGroups, addPart });
 
@@ -41,7 +44,7 @@ const LDrawModel = () => {
           onPointerMissed={handleMiss}
         />
       ))}
-
+      <BrickMoveControls object={selectedObject} studStep={STUD_UNIT} lockY />
       <BrickColorBinding selectedRef={selectedObjectRef} />
     </>
   );
