@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import type { TransformControls as TransformControlsImpl } from "three-stdlib";
+import { HANDLE_SIZE } from "config/brick-config";
 
 type Props = {
   object: THREE.Object3D | null;
@@ -35,7 +36,7 @@ const BrickMoveControls = ({ object, studStep }: Props) => {
       showX
       showY
       showZ
-      size={1.5}
+      size={HANDLE_SIZE}
       translationSnap={studStep}
     />
   );
