@@ -7,11 +7,10 @@ import type { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 type Props = {
   object: THREE.Object3D | null;
-  lockY?: boolean;
   studStep: number;
 };
 
-const BrickMoveControls = ({ object, studStep, lockY }: Props) => {
+const BrickMoveControls = ({ object, studStep }: Props) => {
   const transformControlsRef = useRef<TransformControlsImpl | null>(null);
 
   useEffect(() => {
@@ -33,7 +32,10 @@ const BrickMoveControls = ({ object, studStep, lockY }: Props) => {
       mode="translate"
       space="world"
       object={object}
-      showY={!lockY}
+      showX
+      showY
+      showZ
+      size={1.5}
       translationSnap={studStep}
     />
   );
