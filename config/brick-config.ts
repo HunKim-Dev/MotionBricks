@@ -75,3 +75,5 @@ export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", 
   string,
   string,
 ];
+
+export const STUD_UNIT = 1 * BRICK_RENDER_SCALE[0];
