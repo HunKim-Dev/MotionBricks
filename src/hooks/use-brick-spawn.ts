@@ -3,6 +3,7 @@ import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
 import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
+import { markBrickRoot, cloneBrickMaterials } from "@/utils/ldraw-clone-materials";
 
 type BrickSpawnParams = {
   setLoadedGroups: React.Dispatch<React.SetStateAction<THREE.Group[]>>;
@@ -25,6 +26,9 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
         group.scale.set(...BRICK_RENDER_SCALE);
         group.position.set(...BRICK_RENDER_POSITION);
         group.rotateX(Math.PI);
+
+        markBrickRoot(group);
+        cloneBrickMaterials(group);
 
         const box = new THREE.Box3().setFromObject(group);
         if (isFinite(box.min.y) && box.min.y !== 0) {
