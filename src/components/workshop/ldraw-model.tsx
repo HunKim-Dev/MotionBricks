@@ -40,7 +40,7 @@ const LDrawModel = () => {
         <primitive
           key={group.uuid}
           object={group}
-          onPointerDown={handlePick}
+          onClick={handlePick}
           onPointerMissed={handleMiss}
         />
       ))}
