@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
 type PickEvent = {
@@ -9,6 +9,7 @@ type PickEvent = {
 
 const useBrickSelection = (selectPart: (uuid: string | null) => void) => {
   const selectedObjectRef = useRef<THREE.Object3D | null>(null);
+  const [selectedObject, setSelectedObject] = useState<THREE.Object3D | null>(null);
 
   const setSelectedBrick = useCallback((uuid: string | null) => {
     window.dispatchEvent(new CustomEvent("ui/brick/highlight", { detail: uuid }));
@@ -49,6 +50,8 @@ const useBrickSelection = (selectPart: (uuid: string | null) => void) => {
       setObjectOpacity(objectOpacityChange, 0.5);
       selectedObjectRef.current = objectOpacityChange;
 
+      setSelectedObject(objectOpacityChange);
+
       setSelectedBrick(objectOpacityChange.uuid);
       selectPart(objectOpacityChange.uuid);
     },
@@ -60,6 +63,8 @@ const useBrickSelection = (selectPart: (uuid: string | null) => void) => {
       setObjectOpacity(selectedObjectRef.current, 1);
       selectedObjectRef.current = null;
     }
+
+    setSelectedObject(null);
     setSelectedBrick(null);
     selectPart(null);
   }, [setObjectOpacity, setSelectedBrick, selectPart]);
@@ -69,7 +74,7 @@ const useBrickSelection = (selectPart: (uuid: string | null) => void) => {
     return () => window.removeEventListener("handle-missed", handleMiss);
   }, [handleMiss]);
 
-  return { selectedObjectRef, handlePick, handleMiss };
+  return { selectedObject, selectedObjectRef, handlePick, handleMiss };
 };
 
 export default useBrickSelection;
