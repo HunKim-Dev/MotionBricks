@@ -44,7 +44,7 @@ const LDrawModel = () => {
           onPointerMissed={handleMiss}
         />
       ))}
-      <BrickMoveControls object={selectedObject} studStep={STUD_UNIT} lockY />
+      <BrickMoveControls object={selectedObject} studStep={STUD_UNIT} />
       <BrickColorBinding selectedRef={selectedObjectRef} />
     </>
   );
