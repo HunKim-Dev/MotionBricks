@@ -1,0 +1,35 @@
+{
+  "partId": "2456.dat",
+  "version": "0.1.0",
+  "unit": "LDU",
+  "coordinateFrame": "part-local",
+  "snapPoints": [
+    { "id": "stud_0_0", "type": "stud-top", "position": [-10, 24, -50], "normal": [0, 1, 0] },
+    { "id": "stud_0_1", "type": "stud-top", "position": [-10, 24, -30], "normal": [0, 1, 0] },
+    { "id": "stud_0_2", "type": "stud-top", "position": [-10, 24, -10], "normal": [0, 1, 0] },
+    { "id": "stud_0_3", "type": "stud-top", "position": [-10, 24, 10], "normal": [0, 1, 0] },
+    { "id": "stud_0_4", "type": "stud-top", "position": [-10, 24, 30], "normal": [0, 1, 0] },
+    { "id": "stud_0_5", "type": "stud-top", "position": [-10, 24, 50], "normal": [0, 1, 0] },
+
+    { "id": "stud_1_0", "type": "stud-top", "position": [10, 24, -50], "normal": [0, 1, 0] },
+    { "id": "stud_1_1", "type": "stud-top", "position": [10, 24, -30], "normal": [0, 1, 0] },
+    { "id": "stud_1_2", "type": "stud-top", "position": [10, 24, -10], "normal": [0, 1, 0] },
+    { "id": "stud_1_3", "type": "stud-top", "position": [10, 24, 10], "normal": [0, 1, 0] },
+    { "id": "stud_1_4", "type": "stud-top", "position": [10, 24, 30], "normal": [0, 1, 0] },
+    { "id": "stud_1_5", "type": "stud-top", "position": [10, 24, 50], "normal": [0, 1, 0] },
+
+    { "id": "bottom_0_0", "type": "stud-bottom", "position": [-10, 0, -50], "normal": [0, -1, 0] },
+    { "id": "bottom_0_1", "type": "stud-bottom", "position": [-10, 0, -30], "normal": [0, -1, 0] },
+    { "id": "bottom_0_2", "type": "stud-bottom", "position": [-10, 0, -10], "normal": [0, -1, 0] },
+    { "id": "bottom_0_3", "type": "stud-bottom", "position": [-10, 0, 10], "normal": [0, -1, 0] },
+    { "id": "bottom_0_4", "type": "stud-bottom", "position": [-10, 0, 30], "normal": [0, -1, 0] },
+    { "id": "bottom_0_5", "type": "stud-bottom", "position": [-10, 0, 50], "normal": [0, -1, 0] },
+
+    { "id": "bottom_1_0", "type": "stud-bottom", "position": [10, 0, -50], "normal": [0, -1, 0] },
+    { "id": "bottom_1_1", "type": "stud-bottom", "position": [10, 0, -30], "normal": [0, -1, 0] },
+    { "id": "bottom_1_2", "type": "stud-bottom", "position": [10, 0, -10], "normal": [0, -1, 0] },
+    { "id": "bottom_1_3", "type": "stud-bottom", "position": [10, 0, 10], "normal": [0, -1, 0] },
+    { "id": "bottom_1_4", "type": "stud-bottom", "position": [10, 0, 30], "normal": [0, -1, 0] },
+    { "id": "bottom_1_5", "type": "stud-bottom", "position": [10, 0, 50], "normal": [0, -1, 0] }
+  ]
+}
