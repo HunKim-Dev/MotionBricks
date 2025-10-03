@@ -1,0 +1,13 @@
+{
+  "partId": "3023.dat",
+  "version": "0.1.0",
+  "unit": "LDU",
+  "coordinateFrame": "part-local",
+  "snapPoints": [
+    { "id": "stud_0_0", "type": "stud-top", "position": [0, 8, -10], "normal": [0, 1, 0] },
+    { "id": "stud_0_1", "type": "stud-top", "position": [0, 8, 10], "normal": [0, 1, 0] },
+
+    { "id": "bottom_0_0", "type": "stud-bottom", "position": [0, 0, -10], "normal": [0, -1, 0] },
+    { "id": "bottom_0_1", "type": "stud-bottom", "position": [0, 0, 10], "normal": [0, -1, 0] }
+  ]
+}
