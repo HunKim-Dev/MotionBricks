@@ -2,16 +2,16 @@ import type { PartSnapData } from "@/types/snap";
 
 import SNAP_2456_JSON from "@/snap/brick-json-data/2456-snap.json";
 import SNAP_3001_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3002_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3003_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3004_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3005_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3020_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3021_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3022_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3023_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3024_JSON from "@/snap/brick-json-data/3001-snap.json";
-import SNAP_3795_JSON from "@/snap/brick-json-data/3001-snap.json";
+import SNAP_3002_JSON from "@/snap/brick-json-data/3002-snap.json";
+import SNAP_3003_JSON from "@/snap/brick-json-data/3003-snap.json";
+import SNAP_3004_JSON from "@/snap/brick-json-data/3004-snap.json";
+import SNAP_3005_JSON from "@/snap/brick-json-data/3005-snap.json";
+import SNAP_3020_JSON from "@/snap/brick-json-data/3020-snap.json";
+import SNAP_3021_JSON from "@/snap/brick-json-data/3021-snap.json";
+import SNAP_3022_JSON from "@/snap/brick-json-data/3022-snap.json";
+import SNAP_3023_JSON from "@/snap/brick-json-data/3023-snap.json";
+import SNAP_3024_JSON from "@/snap/brick-json-data/3024-snap.json";
+import SNAP_3795_JSON from "@/snap/brick-json-data/3795-snap.json";
 
 export const SNAP_REGISTRY: Record<string, PartSnapData> = {
   "2456.dat": SNAP_2456_JSON as PartSnapData,
