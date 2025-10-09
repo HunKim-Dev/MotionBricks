@@ -91,3 +91,5 @@ export const PART_ID_DIGITS_REGEX = /\D/g;
 export const GROUND_Y_LEVEL = 0;
 
 export const GROUND_CLEARANCE = 0.05;
+
+export const SNAP_TOLERANCE = 1.5;
