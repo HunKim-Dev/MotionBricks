@@ -79,3 +79,15 @@ export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", 
 export const STUD_UNIT = 1 * BRICK_RENDER_SCALE[0];
 
 export const HANDLE_SIZE = 1.5;
+
+export const SNAP_MIN_DOT_Y = 0.9;
+
+export const AABB_HELPER_COLOR = 0x00ff00;
+
+export const AABB_HELPER_LIFETIME_MS = 1000;
+
+export const PART_ID_DIGITS_REGEX = /\D/g;
+
+export const GROUND_Y_LEVEL = 0;
+
+export const GROUND_CLEARANCE = 0.05;
