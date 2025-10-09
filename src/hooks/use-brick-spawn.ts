@@ -30,7 +30,12 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
         markBrickRoot(group);
         cloneBrickMaterials(group);
 
+        const fileName = path.split("/").pop() || "";
+        const partId = fileName;
+        group.userData.partId = partId;
+
         const box = new THREE.Box3().setFromObject(group);
+
         if (isFinite(box.min.y) && box.min.y !== 0) {
           group.position.y -= box.min.y;
         }
