@@ -8,19 +8,19 @@ export type CatalogItem = {
 };
 
 export const BRICK_CATALOG: CatalogItem[] = [
-  { id: "3005", name: "1x1 Brick", kind: "brick", path: "/ldraw/parts/3005.dat" },
-  { id: "3004", name: "1x2 Brick", kind: "brick", path: "/ldraw/parts/3004.dat" },
-  { id: "3003", name: "2x2 Brick", kind: "brick", path: "/ldraw/parts/3003.dat" },
-  { id: "3002", name: "2x3 Brick", kind: "brick", path: "/ldraw/parts/3002.dat" },
-  { id: "3001", name: "2x4 Brick", kind: "brick", path: "/ldraw/parts/3001.dat" },
-  { id: "2456", name: "2x6 Brick", kind: "brick", path: "/ldraw/parts/2456.dat" },
+  { id: "3005.dat", name: "1x1 Brick", kind: "brick", path: "/ldraw/parts/3005.dat" },
+  { id: "3004.dat", name: "1x2 Brick", kind: "brick", path: "/ldraw/parts/3004.dat" },
+  { id: "3003.dat", name: "2x2 Brick", kind: "brick", path: "/ldraw/parts/3003.dat" },
+  { id: "3002.dat", name: "2x3 Brick", kind: "brick", path: "/ldraw/parts/3002.dat" },
+  { id: "3001.dat", name: "2x4 Brick", kind: "brick", path: "/ldraw/parts/3001.dat" },
+  { id: "2456.dat", name: "2x6 Brick", kind: "brick", path: "/ldraw/parts/2456.dat" },
 
-  { id: "3024", name: "1x1 Plate", kind: "plate", path: "/ldraw/parts/3024.dat" },
-  { id: "3023", name: "1x2 Plate", kind: "plate", path: "/ldraw/parts/3023.dat" },
-  { id: "3022", name: "2x2 Plate", kind: "plate", path: "/ldraw/parts/3022.dat" },
-  { id: "3021", name: "2x3 Plate", kind: "plate", path: "/ldraw/parts/3021.dat" },
-  { id: "3020", name: "2x4 Plate", kind: "plate", path: "/ldraw/parts/3020.dat" },
-  { id: "3795", name: "2x6 Plate", kind: "plate", path: "/ldraw/parts/3795.dat" },
+  { id: "3024.dat", name: "1x1 Plate", kind: "plate", path: "/ldraw/parts/3024.dat" },
+  { id: "3023.dat", name: "1x2 Plate", kind: "plate", path: "/ldraw/parts/3023.dat" },
+  { id: "3022.dat", name: "2x2 Plate", kind: "plate", path: "/ldraw/parts/3022.dat" },
+  { id: "3021.dat", name: "2x3 Plate", kind: "plate", path: "/ldraw/parts/3021.dat" },
+  { id: "3020.dat", name: "2x4 Plate", kind: "plate", path: "/ldraw/parts/3020.dat" },
+  { id: "3795.dat", name: "2x6 Plate", kind: "plate", path: "/ldraw/parts/3795.dat" },
 ];
 
 export type BrickImage = {
@@ -79,3 +79,17 @@ export const BRICK_COLOR_PALETTE = ["#a7f3d0", "#fad81e", "#fa8282", "#d8b4fe", 
 export const STUD_UNIT = 1 * BRICK_RENDER_SCALE[0];
 
 export const HANDLE_SIZE = 1.5;
+
+export const SNAP_MIN_DOT_Y = 0.9;
+
+export const AABB_HELPER_COLOR = 0x00ff00;
+
+export const AABB_HELPER_LIFETIME_MS = 1000;
+
+export const PART_ID_DIGITS_REGEX = /\D/g;
+
+export const GROUND_Y_LEVEL = 0;
+
+export const GROUND_CLEARANCE = 0.05;
+
+export const SNAP_TOLERANCE = 1.5;
