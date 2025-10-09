@@ -9,7 +9,8 @@ import useBrickSelection from "@/hooks/use-brick-selection";
 import useBrickDeletion from "@/hooks/use-brick-deletion";
 import useBrickSpawn from "@/hooks/use-brick-spawn";
 import BrickMoveControls from "./brick-move-controls";
-import { STUD_UNIT } from "config/brick-config";
+import { STUD_UNIT, SNAP_MIN_DOT_Y, SNAP_TOLERANCE } from "config/brick-config";
+import useSnapOnDrop from "@/hooks/use-snap-on-drap";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -32,6 +33,13 @@ const LDrawModel = () => {
     selectPart,
     deletePart,
     selectedObjectRef,
+  });
+
+  useSnapOnDrop({
+    movingBrick: selectedObject ?? null,
+    allBricks: loadedGroups,
+    studStepLateral: STUD_UNIT * SNAP_TOLERANCE,
+    minDotY: SNAP_MIN_DOT_Y,
   });
 
   return (
