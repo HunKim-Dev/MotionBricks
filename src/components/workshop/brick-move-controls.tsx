@@ -16,14 +16,17 @@ const BrickMoveControls = ({ object, studStep }: Props) => {
 
   useEffect(() => {
     const transformControls = transformControlsRef.current;
+
     if (!transformControls) return;
 
-    const onDrag = (event: { value: boolean }) =>
+    const onDrag = (event: { value: boolean }) => {
       window.dispatchEvent(new CustomEvent("orbit-lock", { detail: event.value }));
+    };
 
     transformControls.addEventListener("dragging-changed", onDrag);
+
     return () => transformControls.removeEventListener("dragging-changed", onDrag);
-  }, []);
+  }, [object]);
 
   if (!object) return null;
 
@@ -34,7 +37,7 @@ const BrickMoveControls = ({ object, studStep }: Props) => {
       space="world"
       object={object}
       showX
-      showY
+      showY={false}
       showZ
       size={HANDLE_SIZE}
       translationSnap={studStep}
