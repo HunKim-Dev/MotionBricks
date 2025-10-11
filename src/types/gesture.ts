@@ -13,3 +13,10 @@ export type RecognizeResult = {
   gestures: GestureCategory[][];
   handednesses?: { displayName: string; score: number }[][];
 };
+
+export type CursorOverlay = {
+  show(): void;
+  hide(): void;
+  move(x: number, y: number): void;
+  destroy(): void;
+};
