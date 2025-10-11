@@ -24,3 +24,49 @@ export const MEDIAPIPE_NOISY_PATTERNS = [
   "Custom gesture classifier is not defined",
   "OpenGL error checking is disabled",
 ];
+
+export const CURSOR_POSITION = "fixed";
+
+export const CURSOR_INITIAL_LEFT = "0px";
+
+export const CURSOR_INITIAL_TOP = "0px";
+
+export const CURSOR_SIZE_PX = 24;
+
+export const CURSOR_BORDER_RADIUS = "9999px";
+
+export const CURSOR_FILL_COLOR = "rgba(255,255,255,0.6)";
+
+export const CURSOR_OUTLINE_STYLE = "0 0 0 2px rgba(0,0,0,0.25)";
+
+export const CURSOR_TRANSFORM = "translate(-50%, -50%)";
+
+export const CURSOR_POINTER_EVENTS = "none";
+
+export const CURSOR_OPACITY_HIDDEN = 0;
+
+export const CURSOR_TRANSITION_MS = 150;
+
+export const CURSOR_Z_INDEX = 999999;
+
+export const CURSOR_OPACITY_VISIBLE = 1;
+
+export const GESTURE_SCORE_THRESHOLD = 0.75;
+
+export const MIRROR_VIDEO = true;
+
+export const HAND_MIN_POINTS = 9;
+
+export const FINGER_TIP_INDEX = 8;
+
+export const CLAMP_MIN = 0;
+
+export const CLAMP_MAX = 1;
+
+export const CENTER_NORMALIZED = 0.5;
+
+export const CURSOR_GAIN_X = 2;
+
+export const CURSOR_GAIN_Y = 2;
+
+export const SCREEN_MARGIN = 1;
