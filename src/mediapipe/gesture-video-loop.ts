@@ -4,6 +4,8 @@ import type { GestureRecognizer } from "@mediapipe/tasks-vision";
 import type { RecognizeResult } from "@/types/gesture";
 import handGestureDraw from "./hand-gesture-draw";
 import { CANVAS_CONTEXT_MODE, VIDEO_READY_STATE_THRESHOLD } from "config/gesture-config";
+import createCursorOverlay from "./create-cursor-overlay";
+import gestureCursorOverlay from "./gesture-cursor-overlay";
 
 const gestureVideoLoop = (
   canvasElement: HTMLCanvasElement,
@@ -13,6 +15,8 @@ const gestureVideoLoop = (
   let lastVideoTime = -1;
   let rafId: number | null = null;
 
+  const cursorOverlay = createCursorOverlay();
+  const cursorController = gestureCursorOverlay(cursorOverlay);
   const canvasCtx = canvasElement.getContext(CANVAS_CONTEXT_MODE);
 
   const predictWebcam = () => {
@@ -29,6 +33,7 @@ const gestureVideoLoop = (
       if (!canvasCtx) return;
 
       handGestureDraw(canvasCtx, results.landmarks);
+      cursorController.handle(results);
     }
 
     rafId = requestAnimationFrame(predictWebcam);
@@ -49,6 +54,7 @@ const gestureVideoLoop = (
     video.removeEventListener("loadeddata", onLoaded);
 
     rafId = null;
+    cursorController.destroy();
   };
 
   return stopLoop;
