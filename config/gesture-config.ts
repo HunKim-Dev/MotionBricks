@@ -55,9 +55,9 @@ export const GESTURE_SCORE_THRESHOLD = 0.75;
 
 export const MIRROR_VIDEO = true;
 
-export const HAND_MIN_POINTS = 9;
+export const HAND_MIN_POINTS = 18;
 
-export const FINGER_TIP_INDEX = 8;
+export const PALM_INDICES = [5, 9, 13, 17];
 
 export const CLAMP_MIN = 0;
 
@@ -70,3 +70,7 @@ export const CURSOR_GAIN_X = 2;
 export const CURSOR_GAIN_Y = 2;
 
 export const SCREEN_MARGIN = 1;
+
+export const SMOOTH_ALPHA = 0.35;
+
+export const MAX_STEP_PX = 40;
