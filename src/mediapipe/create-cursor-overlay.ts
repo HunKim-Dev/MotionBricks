@@ -14,10 +14,19 @@ import {
   CURSOR_Z_INDEX,
   CURSOR_TRANSITION_MS,
   CURSOR_OPACITY_VISIBLE,
+  CURSOR_WILL_CHANGE,
+  CURSOR_BACKFACE_VISIBILITY,
+  CURSOR_CONTAIN,
+  CURSOR_MOVE_EPSILON_SQ,
 } from "config/gesture-config";
 
 const createCursorOverlay = () => {
   const element = document.createElement("div");
+
+  let visible = false;
+  let lastX = Number.NEGATIVE_INFINITY;
+  let lastY = Number.NEGATIVE_INFINITY;
+
   Object.assign(element.style, {
     position: CURSOR_POSITION,
     left: CURSOR_INITIAL_LEFT,
@@ -32,19 +41,41 @@ const createCursorOverlay = () => {
     opacity: `${CURSOR_OPACITY_HIDDEN}`,
     transition: `opacity ${CURSOR_TRANSITION_MS}ms ease`,
     zIndex: CURSOR_Z_INDEX,
+    willChange: CURSOR_WILL_CHANGE,
+    backfaceVisibility: CURSOR_BACKFACE_VISIBILITY,
+    contain: CURSOR_CONTAIN,
   });
 
   document.body.appendChild(element);
 
   const show = () => {
-    element.style.opacity = `${CURSOR_OPACITY_VISIBLE}`;
+    if (!visible) {
+      element.style.opacity = `${CURSOR_OPACITY_VISIBLE}`;
+      visible = true;
+    }
   };
   const hide = () => {
-    element.style.opacity = `${CURSOR_OPACITY_HIDDEN}`;
+    if (visible) {
+      element.style.opacity = `${CURSOR_OPACITY_HIDDEN}`;
+      visible = false;
+    }
   };
   const move = (cursorX: number, cursorY: number) => {
-    element.style.left = `${cursorX}px`;
-    element.style.top = `${cursorY}px`;
+    const deletaX = cursorX - lastX;
+    const deletaY = cursorY - lastY;
+
+    if (deletaX * deletaX + deletaY * deletaY < CURSOR_MOVE_EPSILON_SQ) return;
+
+    lastX = cursorX;
+    lastY = cursorY;
+
+    element.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+
+    window.dispatchEvent(
+      new CustomEvent("cursor-move", {
+        detail: { x: cursorX, y: cursorY },
+      })
+    );
   };
 
   const destroy = () => element.remove();

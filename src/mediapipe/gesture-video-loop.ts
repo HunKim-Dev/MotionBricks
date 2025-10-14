@@ -3,9 +3,17 @@
 import type { GestureRecognizer } from "@mediapipe/tasks-vision";
 import type { RecognizeResult } from "@/types/gesture";
 import handGestureDraw from "./hand-gesture-draw";
-import { CANVAS_CONTEXT_MODE, VIDEO_READY_STATE_THRESHOLD } from "config/gesture-config";
+import {
+  CANVAS_CONTEXT_MODE,
+  VIDEO_READY_STATE_THRESHOLD,
+  INFER_INTERVAL,
+  DRAW_INTERVAL,
+} from "config/gesture-config";
 import createCursorOverlay from "./create-cursor-overlay";
 import gestureCursorOverlay from "./gesture-cursor-overlay";
+import createGestureCursorDownUp from "./gesture-cursor-down-up";
+import createGestureCursorDrag from "./gesture-cursor-drag";
+import createGesturePinchZoom from "./create-gesture-zoom-in-out";
 
 const gestureVideoLoop = (
   canvasElement: HTMLCanvasElement,
@@ -15,8 +23,17 @@ const gestureVideoLoop = (
   let lastVideoTime = -1;
   let rafId: number | null = null;
 
+  let lastResults: RecognizeResult | null = null;
+
+  let lastInferTime = 0;
+  let lastDrawTime = 0;
+
   const cursorOverlay = createCursorOverlay();
   const cursorController = gestureCursorOverlay(cursorOverlay);
+  const mouseDownUp = createGestureCursorDownUp();
+  const mouseDrag = createGestureCursorDrag();
+  const pinchZoom = createGesturePinchZoom();
+
   const canvasCtx = canvasElement.getContext(CANVAS_CONTEXT_MODE);
 
   const predictWebcam = () => {
@@ -25,15 +42,31 @@ const gestureVideoLoop = (
       canvasElement.height = video.videoHeight;
     }
 
+    const nowLoop = performance.now();
+    const canInfer = nowLoop - lastInferTime >= INFER_INTERVAL;
+
     if (video.currentTime !== lastVideoTime) {
       lastVideoTime = video.currentTime;
 
-      const nowIn = performance.now();
-      const results = gestureRecognizer.recognizeForVideo(video, nowIn) as RecognizeResult;
-      if (!canvasCtx) return;
+      if (canInfer) {
+        lastInferTime = nowLoop;
+        const nowIn = performance.now();
+        lastResults = gestureRecognizer.recognizeForVideo(video, nowIn) as RecognizeResult;
+      }
+    }
 
-      handGestureDraw(canvasCtx, results.landmarks);
-      cursorController.handle(results);
+    if (lastResults) {
+      if (canvasCtx) {
+        if (nowLoop - lastDrawTime >= DRAW_INTERVAL) {
+          lastDrawTime = nowLoop;
+          handGestureDraw(canvasCtx, lastResults.landmarks);
+        }
+      }
+
+      cursorController.handle(lastResults);
+      mouseDownUp.handle(lastResults);
+      mouseDrag.handle(lastResults);
+      pinchZoom.handle(lastResults);
     }
 
     rafId = requestAnimationFrame(predictWebcam);
@@ -52,9 +85,11 @@ const gestureVideoLoop = (
   const stopLoop = () => {
     if (rafId) cancelAnimationFrame(rafId);
     video.removeEventListener("loadeddata", onLoaded);
-
     rafId = null;
     cursorController.destroy();
+    mouseDownUp.destroy();
+    mouseDrag.destroy();
+    pinchZoom.destroy();
   };
 
   return stopLoop;

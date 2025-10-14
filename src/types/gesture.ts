@@ -20,3 +20,13 @@ export type CursorOverlay = {
   move(x: number, y: number): void;
   destroy(): void;
 };
+
+export type ClosedFistToggleOptions = {
+  onEnter: () => void;
+  onExit: () => void;
+};
+
+export type VictoryToggleOptions = {
+  onEnter: () => void;
+  onExit: () => void;
+};

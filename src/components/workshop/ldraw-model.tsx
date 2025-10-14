@@ -10,11 +10,14 @@ import useBrickDeletion from "@/hooks/use-brick-deletion";
 import useBrickSpawn from "@/hooks/use-brick-spawn";
 import BrickMoveControls from "./brick-move-controls";
 import { STUD_UNIT, SNAP_MIN_DOT_Y, SNAP_TOLERANCE } from "config/brick-config";
-import useSnapOnDrop from "@/hooks/use-snap-on-drap";
+import useSnapOnDrop from "@/hooks/use-snap-on-drop";
+import useVictoryDragPlane from "@/hooks/use-victory-drag-plane";
+import useVirtualSelect from "@/hooks/use-virtual-select";
+import useVictoryDragState from "@/hooks/use-victory-drag-state";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
-  const { scene } = useThree();
+  const { scene, camera, gl } = useThree();
 
   const addPart = useBrickPartsStore((state) => state.addPart);
   const deletePart = useBrickPartsStore((state) => state.deletePart);
@@ -40,6 +43,16 @@ const LDrawModel = () => {
     allBricks: loadedGroups,
     studStepLateral: STUD_UNIT * SNAP_TOLERANCE,
     minDotY: SNAP_MIN_DOT_Y,
+  });
+
+  useVirtualSelect({ camera, gl, loadedGroups, handlePick });
+
+  const victoryActive = useVictoryDragState();
+
+  useVictoryDragPlane({
+    selectedObject,
+    enabled: victoryActive,
+    snapStep: STUD_UNIT,
   });
 
   return (
