@@ -78,7 +78,7 @@ const BottomBricksDock = () => {
               className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-md border bg-muted/60 mt-1"
               onClick={() => {
                 const item = CATALOG_BY_NAME.get(box.name);
-                window.dispatchEvent(new CustomEvent("spawn-brick", { detail: item }));
+                window.dispatchEvent(new CustomEvent("ghost-spawn", { detail: item }));
               }}
             >
               <Image

@@ -14,6 +14,7 @@ import useSnapOnDrop from "@/hooks/use-snap-on-drop";
 import useVictoryDragPlane from "@/hooks/use-victory-drag-plane";
 import useVirtualSelect from "@/hooks/use-virtual-select";
 import useVictoryDragState from "@/hooks/use-victory-drag-state";
+import useGhostBrickFollower from "@/hooks/use-ghost-brick-follower";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -22,6 +23,8 @@ const LDrawModel = () => {
   const addPart = useBrickPartsStore((state) => state.addPart);
   const deletePart = useBrickPartsStore((state) => state.deletePart);
   const selectPart = useBrickPartsStore((state) => state.selectPart);
+
+  useGhostBrickFollower();
 
   const { selectedObject, selectedObjectRef, handlePick, handleMiss } =
     useBrickSelection(selectPart);

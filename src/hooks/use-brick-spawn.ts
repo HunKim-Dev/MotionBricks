@@ -10,7 +10,12 @@ type BrickSpawnParams = {
   addPart: (p: { id: string; name: string; uuid: string }) => void;
 };
 
-type SpawnBrickEvent = { id: string; name: string; path: string };
+type SpawnBrickEvent = {
+  id: string;
+  name: string;
+  path: string;
+  position?: [number, number, number];
+};
 
 const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
   useEffect(() => {
@@ -20,11 +25,16 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
     loader.setPartsLibraryPath(LDRAW_PATH);
 
     const onSpawn = (event: Event) => {
-      const { path, name, id } = (event as CustomEvent<SpawnBrickEvent>).detail;
+      const { path, name, id, position } = (event as CustomEvent<SpawnBrickEvent>).detail;
 
       loader.load(path, (group) => {
         group.scale.set(...BRICK_RENDER_SCALE);
-        group.position.set(...BRICK_RENDER_POSITION);
+        if (position) {
+          group.position.set(...position);
+        } else {
+          group.position.set(...BRICK_RENDER_POSITION);
+        }
+
         group.rotateX(Math.PI);
 
         markBrickRoot(group);
