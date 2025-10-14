@@ -71,6 +71,48 @@ export const CURSOR_GAIN_Y = 2;
 
 export const SCREEN_MARGIN = 1;
 
-export const SMOOTH_ALPHA = 0.35;
+export const SMOOTH_ALPHA = 0.18;
 
 export const MAX_STEP_PX = 40;
+
+export const HAND_OVERLAY_MAX_FPS = 20;
+
+export const CURSOR_WILL_CHANGE = "transform, opacity";
+
+export const CURSOR_BACKFACE_VISIBILITY = "hidden";
+
+export const CURSOR_CONTAIN = "layout style paint";
+
+export const CURSOR_MOVE_EPSILON_SQ = 0.25;
+
+export const THUMB_UP_ALIASES = ["thumb_up", "thumbs_up", "thumb-up", "thumbsup"];
+
+export const THUMB_DOWN_ALIASES = ["thumb_down", "thumbs_down", "thumb-down", "thumbsdown"];
+
+export const BASE_SPEED_PER_S = 900;
+
+export const SCORE_GAIN_MIN = 0.5;
+
+export const SCORE_GAIN_MAX = 1.0;
+
+export const SMOOTH = 0.6;
+
+export const MAX_ABS_DELTA_PER_FRAME = 120;
+
+export const ZOOM_IN_DIRECTION = -1;
+
+export const ZOOM_OUT_DIRECTION = +1;
+
+export const CURSOR_MOVE_EPSILON = 0.01;
+
+export const INFER_FPS = 24;
+
+export const INFER_INTERVAL = 1000 / INFER_FPS;
+
+export const DRAW_INTERVAL = 1000 / Math.max(1, HAND_OVERLAY_MAX_FPS);
+
+export const POINTER_ID = 1;
+
+export const INITIAL_ACTIVE_STATE = false;
+
+export const MAX_SPEED_PX_PER_S = 2200;
