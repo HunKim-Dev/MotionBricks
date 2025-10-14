@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import { getBrickRoot } from "@/utils/get-brick-root";
 
 type PickEvent = {
   delta: number;
@@ -47,13 +48,15 @@ const useBrickSelection = (selectPart: (uuid: string | null) => void) => {
 
       const objectOpacityChange: THREE.Object3D = event.eventObject ?? event.object;
 
-      setObjectOpacity(objectOpacityChange, 0.5);
-      selectedObjectRef.current = objectOpacityChange;
+      const brickRoot = getBrickRoot(objectOpacityChange);
 
-      setSelectedObject(objectOpacityChange);
+      setObjectOpacity(brickRoot, 0.5);
+      selectedObjectRef.current = brickRoot;
 
-      setSelectedBrick(objectOpacityChange.uuid);
-      selectPart(objectOpacityChange.uuid);
+      setSelectedObject(brickRoot);
+
+      setSelectedBrick(brickRoot.uuid);
+      selectPart(brickRoot.uuid);
     },
     [setObjectOpacity, setSelectedBrick, selectPart]
   );
