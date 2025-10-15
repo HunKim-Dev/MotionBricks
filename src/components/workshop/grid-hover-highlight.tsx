@@ -11,7 +11,7 @@ import {
   GRID_HOVER_COLOR_X,
   GRID_HOVER_COLOR_Z,
 } from "config/ui-config";
-import { worldFromClientXY, attachScreenXYListeners } from "@/utils/world-from-client-xy";
+import { worldFromClientXY, attachScreenXYListeners } from "@/utils/pointer-coordinate";
 
 const quantize = (v: number, q = STUD_UNIT) => Math.round(v / q) * q;
 
