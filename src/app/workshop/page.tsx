@@ -11,6 +11,7 @@ import {
   BRICK_DIRECTIONAL_LIGHT,
   BRICK_HEMISPHERE_LIGHT,
 } from "config/brick-config";
+import GridHoverHighlight from "@/components/workshop/grid-hover-highlight";
 
 const WorkShopPage = () => {
   const [orbitEnabled, setOrbitEnabled] = useState(true);
@@ -31,6 +32,7 @@ const WorkShopPage = () => {
         onPointerMissed={() => window.dispatchEvent(new CustomEvent("handle-missed"))}
       >
         <gridHelper args={GRID_SIZE} />
+        <GridHoverHighlight />
         <ambientLight {...BRICK_AMBIENT_LIGHT} />
         <directionalLight {...BRICK_DIRECTIONAL_LIGHT} />
         <hemisphereLight {...BRICK_HEMISPHERE_LIGHT} />
