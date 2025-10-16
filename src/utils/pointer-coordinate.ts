@@ -55,3 +55,20 @@ export const attachScreenXYListeners = (
     gl.domElement.removeEventListener("pointermove", onPointerMove as EventListener);
   };
 };
+
+export const worldToScreenXY = (
+  object3D: THREE.Object3D,
+  camera: THREE.Camera,
+  gl: THREE.WebGLRenderer
+): { x: number; y: number } | null => {
+  if (!object3D || !camera || !gl) return null;
+
+  const screenPosition = new THREE.Vector3();
+  object3D.getWorldPosition(screenPosition).project(camera);
+
+  const canvasRect = gl.domElement.getBoundingClientRect();
+  const screenX = canvasRect.left + (screenPosition.x * 0.5 + 0.5) * canvasRect.width;
+  const screenY = canvasRect.top + (-screenPosition.y * 0.5 + 0.5) * canvasRect.height;
+
+  return { x: screenX, y: screenY };
+};
