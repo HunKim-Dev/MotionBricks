@@ -13,7 +13,7 @@ const DeleteBrickButton = () => {
     window.dispatchEvent(new CustomEvent("delete-brick", { detail: { uuid: selectedBrickUuid } }));
   };
   return (
-    <div className="flex items-center justify-end px-2 mt-2">
+    <div className="flex items-center justify-end px-2">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
