@@ -12,6 +12,8 @@ import {
   BRICK_HEMISPHERE_LIGHT,
 } from "config/brick-config";
 import GridHoverHighlight from "@/components/workshop/grid-hover-highlight";
+import BrickToolBar from "@/components/workshop/brick-tool-bar";
+import ColorPaletteOverlay from "@/components/workshop/color-palette-overlay";
 
 const WorkShopPage = () => {
   const [orbitEnabled, setOrbitEnabled] = useState(true);
@@ -39,6 +41,8 @@ const WorkShopPage = () => {
         <OrbitControls makeDefault enabled={orbitEnabled} />
         <LDrawModel />
       </Canvas>
+      <BrickToolBar />
+      <ColorPaletteOverlay />
     </div>
   );
 };
