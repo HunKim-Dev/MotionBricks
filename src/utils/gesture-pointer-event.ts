@@ -3,6 +3,11 @@ let downTarget: Element | null = null;
 let lastDownXY: { x: number; y: number } | null = null;
 let canvasTarget: Element | null = null;
 let useCanvasOnly = false;
+let alsoDispatchMouse = false;
+
+export const setAlsoDispatchMouse = (on: boolean) => {
+  alsoDispatchMouse = on;
+};
 
 export const setCanvasPointerTarget = (element: Element | null) => {
   canvasTarget = element;
@@ -14,8 +19,28 @@ export const enableCanvasPointerTarget = (enable: boolean) => {
 const ensureCanvasTarget = (element: Element | null): Element => {
   if (useCanvasOnly && canvasTarget) return canvasTarget;
   if (!element) return document.body;
+
   const canvas = element.closest("canvas");
   return canvas ?? element;
+};
+
+const dispatchMouse = (
+  target: Element,
+  type: "mousedown" | "mousemove" | "mouseup" | "click",
+  x: number,
+  y: number
+) => {
+  if (!alsoDispatchMouse) return;
+  target.dispatchEvent(
+    new MouseEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      clientX: x,
+      clientY: y,
+      buttons: type === "mousedown" ? 1 : 0,
+      button: 0,
+    })
+  );
 };
 
 const makePointerInit = (
@@ -46,6 +71,7 @@ export const dispatchPointerEvent = (type: "down" | "up", x: number, y: number) 
         makePointerInit(x, y, { buttons: 1, button: 0, pressure: 0.5 })
       )
     );
+    dispatchMouse(downTarget, "mousedown", x, y);
     return;
   }
 
@@ -54,10 +80,12 @@ export const dispatchPointerEvent = (type: "down" | "up", x: number, y: number) 
   target.dispatchEvent(
     new PointerEvent("pointermove", makePointerInit(x, y, { buttons: 0, button: 0, pressure: 0 }))
   );
+  dispatchMouse(target, "mousemove", x, y);
 
   target.dispatchEvent(
     new PointerEvent("pointerup", makePointerInit(x, y, { buttons: 0, button: 0, pressure: 0 }))
   );
+  dispatchMouse(target, "mouseup", x, y);
 
   if (lastDownXY) {
     const dx = x - lastDownXY.x;
@@ -68,6 +96,7 @@ export const dispatchPointerEvent = (type: "down" | "up", x: number, y: number) 
       target.dispatchEvent(
         new PointerEvent("click", makePointerInit(x, y, { buttons: 0, button: 0, pressure: 0 }))
       );
+      dispatchMouse(target, "click", x, y);
     }
   }
 
@@ -85,6 +114,7 @@ export const dispatchPointerMove = (x: number, y: number) => {
       makePointerInit(x, y, { buttons: isDown ? 1 : 0, button: 0, pressure: isDown ? 0.5 : 0 })
     )
   );
+  dispatchMouse(target, "mousemove", x, y);
 };
 
 export const dispatchWheel = (x: number, y: number, deltaY: number, extra?: WheelEventInit) => {
