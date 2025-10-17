@@ -28,7 +28,7 @@ const BrickMoveControls = ({ object, studStep }: Props) => {
     return () => transformControls.removeEventListener("dragging-changed", onDrag);
   }, [object]);
 
-  if (!object) return null;
+  if (!object || !object.parent) return null;
 
   return (
     <TransformControls
