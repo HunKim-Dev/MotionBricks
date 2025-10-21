@@ -6,11 +6,10 @@ import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { enableCanvasPointerTarget, setAlsoDispatchMouse } from "@/utils/gesture-pointer-event";
 import {
-  PALETTE_RIGHT_PX,
-  PALETTE_TOP_PX,
   PALETTE_BASIC_COLOR,
   PALETTE_SIZE_WIDTH,
   PALETTE_SIZE_HEIGHT,
+  PALETTE_OFFSET_FROM_TOOLBAR,
 } from "config/ui-config";
 
 const ColorPaletteOverlay = () => {
@@ -18,6 +17,7 @@ const ColorPaletteOverlay = () => {
   const [mounted, setMounted] = useState(false);
   const [hexColor, setHexColor] = useColor(PALETTE_BASIC_COLOR);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [anchor, setAnchor] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -26,6 +26,15 @@ const ColorPaletteOverlay = () => {
 
     window.addEventListener("open-color-picker", onOpen as EventListener);
     return () => window.removeEventListener("open-color-picker", onOpen as EventListener);
+  }, []);
+
+  useEffect(() => {
+    const onAnchor = (event: Event) => {
+      const { x, y } = (event as CustomEvent<{ x: number; y: number }>).detail;
+      setAnchor({ x, y });
+    };
+    window.addEventListener("toolbar-anchor", onAnchor as EventListener);
+    return () => window.removeEventListener("toolbar-anchor", onAnchor as EventListener);
   }, []);
 
   useEffect(() => {
@@ -65,15 +74,23 @@ const ColorPaletteOverlay = () => {
     window.dispatchEvent(new CustomEvent("brick-color-change", { detail: hexColor.hex }));
   }, [hexColor.hex]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open || !anchor) return null;
+
+  const styleByPosition = {
+    position: "fixed" as const,
+    left: 0,
+    top: 0,
+    transform: `translate(${anchor.x + PALETTE_OFFSET_FROM_TOOLBAR.x}px, ${
+      anchor.y + PALETTE_OFFSET_FROM_TOOLBAR.y
+    }px)`,
+  };
 
   return createPortal(
     <div
       ref={containerRef}
       className="fixed z-[999998] rounded-md border bg-white p-3 shadow-lg"
       style={{
-        top: PALETTE_TOP_PX,
-        right: PALETTE_RIGHT_PX,
+        ...styleByPosition,
         width: PALETTE_SIZE_WIDTH,
         height: PALETTE_SIZE_HEIGHT,
       }}

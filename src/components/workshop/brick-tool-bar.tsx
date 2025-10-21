@@ -52,6 +52,18 @@ const BrickToolbar = () => {
   const x = Math.round(position!.x + TOOLBAR_OFFSET_PX.x);
   const y = Math.round(position!.y + TOOLBAR_OFFSET_PX.y);
 
+  const openPaletteAtToolbar = () => {
+    if (!selectedBrickUuid) return;
+    window.dispatchEvent(
+      new CustomEvent("open-color-picker", {
+        detail: {
+          uuid: selectedBrickUuid,
+          anchor: { x, y },
+        },
+      })
+    );
+  };
+
   const node = (
     <div
       ref={containerRef}
@@ -66,7 +78,7 @@ const BrickToolbar = () => {
     >
       <div className="flex items-center gap-0.5 rounded-md border bg-white/90 p-1 shadow">
         <RotateBrickButton />
-        <ColorBrickButton />
+        <ColorBrickButton onOpen={openPaletteAtToolbar} />
         <DeleteBrickButton />
       </div>
     </div>

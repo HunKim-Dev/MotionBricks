@@ -5,11 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useBrickPartsStore } from "@/store/brick-parts";
 
-const ColorBrickButton = () => {
+type Props = {
+  onOpen: () => void;
+};
+
+const ColorBrickButton = ({ onOpen }: Props) => {
   const selectedBrickUuid = useBrickPartsStore((state) => state.selectedBrickUuid);
 
   const hexColorPaletteClick = () => {
     if (!selectedBrickUuid) return;
+
+    if (onOpen) {
+      onOpen();
+      return;
+    }
 
     window.dispatchEvent(
       new CustomEvent("open-color-picker", { detail: { uuid: selectedBrickUuid } })
