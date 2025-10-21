@@ -20,12 +20,10 @@ export const TOOLBAR_Z_INDEX = 999998;
 
 export const TOOLBAR_POINTER_EVENTS = "auto";
 
-export const PALETTE_TOP_PX = 80;
-
-export const PALETTE_RIGHT_PX = 360;
-
 export const PALETTE_BASIC_COLOR = "#FFFFFF";
 
 export const PALETTE_SIZE_WIDTH = 260;
 
 export const PALETTE_SIZE_HEIGHT = 320;
+
+export const PALETTE_OFFSET_FROM_TOOLBAR = { x: 72, y: -8 };
