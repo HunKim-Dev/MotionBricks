@@ -4,7 +4,7 @@ import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { enableCanvasPointerTarget, setAlsoDispatchMouse } from "@/utils/gesture-pointer-event";
+import { setAlsoDispatchMouse } from "@/utils/gesture-pointer-event";
 import {
   PALETTE_BASIC_COLOR,
   PALETTE_SIZE_WIDTH,
@@ -40,16 +40,7 @@ const ColorPaletteOverlay = () => {
   useEffect(() => {
     if (!open) return;
 
-    enableCanvasPointerTarget(false);
     setAlsoDispatchMouse(true);
-    return () => {
-      setAlsoDispatchMouse(false);
-      enableCanvasPointerTarget(true);
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
 
     const onPointerDown = (event: PointerEvent) => {
       const paletteElement = containerRef.current;
@@ -65,6 +56,7 @@ const ColorPaletteOverlay = () => {
     window.addEventListener("keydown", onKey);
 
     return () => {
+      setAlsoDispatchMouse(false);
       document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKey);
     };
