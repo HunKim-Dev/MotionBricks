@@ -42,6 +42,8 @@ const useBrickDeletion = ({
       selectPart(null);
       deletePart(deletedBrickUuid);
 
+      window.dispatchEvent(new CustomEvent("handle-missed"));
+
       window.dispatchEvent(
         new CustomEvent("layer-deleted", { detail: { uuid: deletedBrickUuid } })
       );

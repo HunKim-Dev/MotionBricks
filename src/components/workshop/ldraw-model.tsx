@@ -15,6 +15,8 @@ import useVictoryDragPlane from "@/hooks/use-victory-drag-plane";
 import useVirtualSelect from "@/hooks/use-virtual-select";
 import useVictoryDragState from "@/hooks/use-victory-drag-state";
 import useGhostBrickFollower from "@/hooks/use-ghost-brick-follower";
+import ToolbarAnchorEmitter from "@/components/workshop/tool-bar-anchor-emitter";
+import BrickRotateBinding from "./brick-rotate-binding";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -70,6 +72,8 @@ const LDrawModel = () => {
       ))}
       <BrickMoveControls object={selectedObject} studStep={STUD_UNIT} />
       <BrickColorBinding selectedRef={selectedObjectRef} />
+      <BrickRotateBinding selectedRef={selectedObjectRef} />
+      <ToolbarAnchorEmitter selectedRef={selectedObjectRef} />
     </>
   );
 };

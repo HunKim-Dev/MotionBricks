@@ -1,17 +1,30 @@
 "use client";
 
+import { Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useBrickPartsStore } from "@/store/brick-parts";
-import { Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useBrickPartsStore } from "@/store/brick-parts";
 
-const DeleteBrickButton = () => {
+type Props = {
+  onOpen: () => void;
+};
+
+const ColorBrickButton = ({ onOpen }: Props) => {
   const selectedBrickUuid = useBrickPartsStore((state) => state.selectedBrickUuid);
 
-  const deleteClick = () => {
+  const hexColorPaletteClick = () => {
     if (!selectedBrickUuid) return;
-    window.dispatchEvent(new CustomEvent("delete-brick", { detail: { uuid: selectedBrickUuid } }));
+
+    if (onOpen) {
+      onOpen();
+      return;
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("open-color-picker", { detail: { uuid: selectedBrickUuid } })
+    );
   };
+
   return (
     <div className="flex items-center justify-end px-2">
       <Tooltip>
@@ -20,16 +33,15 @@ const DeleteBrickButton = () => {
             size="icon"
             className="h-8 w-8 border-black text-black hover:bg-black/5 disabled:opacity-40"
             variant="outline"
-            onClick={deleteClick}
-            disabled={!selectedBrickUuid}
+            onClick={hexColorPaletteClick}
           >
-            <Trash2 className="h-4 w-4" />
+            <Palette className="h-4 w-4" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Delete</TooltipContent>
+        <TooltipContent>Color</TooltipContent>
       </Tooltip>
     </div>
   );
 };
 
-export default DeleteBrickButton;
+export default ColorBrickButton;

@@ -1,17 +1,24 @@
 "use client";
 
+import { RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useBrickPartsStore } from "@/store/brick-parts";
-import { Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useBrickPartsStore } from "@/store/brick-parts";
 
-const DeleteBrickButton = () => {
+const RotateBrickButton = () => {
   const selectedBrickUuid = useBrickPartsStore((state) => state.selectedBrickUuid);
 
-  const deleteClick = () => {
+  const RotateBrickClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!selectedBrickUuid) return;
-    window.dispatchEvent(new CustomEvent("delete-brick", { detail: { uuid: selectedBrickUuid } }));
+
+    window.dispatchEvent(
+      new CustomEvent("brick-rotate", {
+        detail: { uuid: selectedBrickUuid, axis: "y" as const, deg: 90 as const },
+      })
+    );
   };
+
   return (
     <div className="flex items-center justify-end px-2">
       <Tooltip>
@@ -20,16 +27,16 @@ const DeleteBrickButton = () => {
             size="icon"
             className="h-8 w-8 border-black text-black hover:bg-black/5 disabled:opacity-40"
             variant="outline"
-            onClick={deleteClick}
-            disabled={!selectedBrickUuid}
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={RotateBrickClick}
           >
-            <Trash2 className="h-4 w-4" />
+            <RefreshCcw className="h-4 w-4" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Delete</TooltipContent>
+        <TooltipContent>Rotate</TooltipContent>
       </Tooltip>
     </div>
   );
 };
 
-export default DeleteBrickButton;
+export default RotateBrickButton;
