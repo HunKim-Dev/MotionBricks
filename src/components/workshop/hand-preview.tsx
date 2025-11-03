@@ -22,13 +22,12 @@ const HandPreview = () => {
 
       streamRef.current = streamCamera;
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = streamCamera;
-        await videoRef.current.play();
-      }
-
       const video = videoRef.current;
       const canvas = canvasRef.current;
+
+      if (video) {
+        video.srcObject = streamCamera;
+      }
 
       if (video && canvas) {
         const recognizer = await initGestureRecognizer();
