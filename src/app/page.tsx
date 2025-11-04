@@ -10,6 +10,8 @@ import {
   LANDING_PAGE_LOGIN_LABEL,
   LANDING_PAGE_FREE_TRIAL_LABEL,
 } from "config/app-config";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import AuthDialog from "@/components/auth/auth-dialog";
 
 const LandingPage = () => {
   return (
@@ -35,13 +37,18 @@ const LandingPage = () => {
           </div>
 
           <div className="mt-6 flex flex-col gap-7">
-            <Button
-              asChild
-              className="w-48 h-12 text-lg font-semibold transition-colors duration-200 hover:bg-primary/70"
-              variant="default"
-            >
-              <Link href="/login">{LANDING_PAGE_LOGIN_LABEL}</Link>
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  className="w-48 h-12 text-lg font-semibold transition-colors duration-200 hover:bg-primary/70"
+                  variant="default"
+                >
+                  {LANDING_PAGE_LOGIN_LABEL}
+                </Button>
+              </DialogTrigger>
+
+              <AuthDialog />
+            </Dialog>
 
             <Button
               asChild

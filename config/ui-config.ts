@@ -29,3 +29,5 @@ export const PALETTE_SIZE_HEIGHT = 320;
 export const PALETTE_OFFSET_FROM_TOOLBAR = { x: 72, y: -8 };
 
 export const LANDING_PAGE_IMAGE_SIZE = 550;
+
+export const LOGIN_PAGE_IMAGE_SIZE = 120;
