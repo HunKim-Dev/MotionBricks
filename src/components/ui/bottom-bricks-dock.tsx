@@ -12,6 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { BRICK_CATALOG, BRICK_BAR_IMAGE_SIZE, BRICK_BOX_IMAGES } from "config/brick-config";
+import { BOTTOM_BRICK_DOCK } from "config/ui-config";
 
 type BricksCategory = "all" | "full" | "plate";
 
@@ -47,25 +48,25 @@ const BottomBricksDock = () => {
   }, [bricksCategory, searchedBricks]);
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-40 border bg-background w-full max-w-screen-lg -translate-x-1/2 rounded-md">
+    <div className="fixed bottom-0 left-1/2 z-40 border bg-background w-auto max-w-[70%] -translate-x-1/2 rounded-md">
       <div className="flex h-10 items-center gap-2 border-b px-3">
         <Select
           defaultValue={bricksCategory}
           onValueChange={(value) => setBricksCategory(value as BricksCategory)}
         >
-          <SelectTrigger className="h-8 w-[160px]">
+          <SelectTrigger className="!h-8 px-2 w-[160px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="full">Bricks</SelectItem>
-            <SelectItem value="plate">Plates</SelectItem>
+            <SelectItem value="all">{BOTTOM_BRICK_DOCK.SELECT_ITEM_ALL}</SelectItem>
+            <SelectItem value="full">{BOTTOM_BRICK_DOCK.SELECT_ITEM_BRICK}</SelectItem>
+            <SelectItem value="plate">{BOTTOM_BRICK_DOCK.SELECT_ITEM_PLATE}</SelectItem>
           </SelectContent>
         </Select>
         <div className="flex-1" />
         <Input
           className="h-8 w-[220px]"
-          placeholder="Search"
+          placeholder={BOTTOM_BRICK_DOCK.INPUT_INSIDE_LABAL}
           value={searchedBricks}
           onChange={(event) => setSearchedBricks(event.target.value)}
         />
