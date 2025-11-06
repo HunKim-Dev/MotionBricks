@@ -5,6 +5,7 @@ import { CAMERA_START_ERROR } from "config/app-config";
 import initGestureRecognizer from "@/mediapipe/init-gesture-recognizer";
 import gestureVideoLoop from "@/mediapipe/gesture-video-loop";
 import ConsoleErrorFilter from "@/mediapipe/console-error-filter";
+import { HAND_PREVIEW_LABEL } from "config/ui-config";
 
 const HandPreview = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -69,10 +70,10 @@ const HandPreview = () => {
     <>
       <ConsoleErrorFilter />
       <div className="relative w-full overflow-hidden rounded-md border bg-muted/40">
-        <div className="relative aspect-video w-full">
+        <div className="relative w-full max-w-[360px] aspect-[4/3] mx-auto">
           <video
             ref={videoRef}
-            className="h-full w-full object-cover [transform:scaleX(-1)]"
+            className="h-full w-full object-contain [transform:scaleX(-1)]"
             muted
             playsInline
             autoPlay
@@ -84,7 +85,7 @@ const HandPreview = () => {
           />
         </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/30 to-transparent p-2 text-xs text-white">
-          Hand Landmarker (preview)
+          {HAND_PREVIEW_LABEL}
         </div>
       </div>
     </>

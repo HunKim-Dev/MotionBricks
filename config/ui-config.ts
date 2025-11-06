@@ -31,3 +31,20 @@ export const PALETTE_OFFSET_FROM_TOOLBAR = { x: 72, y: -8 };
 export const LANDING_PAGE_IMAGE_SIZE = 550;
 
 export const LOGIN_PAGE_IMAGE_SIZE = 120;
+
+export const HAND_PREVIEW_LABEL = "손 제스처 미리보기";
+
+export const HAND_START_BUTTON_LABEL = "비디오 시작";
+
+export const HAND_STOP_BUTTON_LABEL = "비디오 종류";
+
+export const SIDEBAR_LAYERS_LABEL = "브릭 레이어";
+
+export const SIDEBAR_LAYERS_INSIDE_LABEL = "브릭 없음";
+
+export const BOTTOM_BRICK_DOCK = {
+  SELECT_ITEM_ALL: "전체",
+  SELECT_ITEM_BRICK: "브릭",
+  SELECT_ITEM_PLATE: "납작브릭",
+  INPUT_INSIDE_LABAL: "검색",
+};

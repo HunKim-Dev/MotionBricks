@@ -28,7 +28,7 @@ const WorkShopPage = () => {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div className="w-full h-screen overflow-hidden">
       <Canvas
         camera={CAMERA_LOCATION}
         onPointerMissed={() => window.dispatchEvent(new CustomEvent("handle-missed"))}
