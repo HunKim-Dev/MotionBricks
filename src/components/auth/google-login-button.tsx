@@ -1,13 +1,16 @@
 "use client";
 
+import useUserLogin from "@/hooks/use-user-login";
+
 type GoogleLoginButtonProps = {
   text: string;
-  onClick?: () => void;
 };
 
-const GoogleLoginButton = ({ text, onClick }: GoogleLoginButtonProps) => {
+const GoogleLoginButton = ({ text }: GoogleLoginButtonProps) => {
+  const { login } = useUserLogin();
+
   return (
-    <button type="button" className="gsi-material-button w-full" onClick={onClick}>
+    <button type="button" className="gsi-material-button w-full" onClick={login}>
       <div className="gsi-material-button-state" />
       <div className="gsi-material-button-content-wrapper">
         <div className="gsi-material-button-icon">
