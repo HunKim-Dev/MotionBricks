@@ -1,15 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { USER_LOGOUT_TOAST, USER_LOGOUT_LOG, ERROR_CODES, SUCCESS_CODES } from "config/app-config";
+import { signOut } from "next-auth/react";
+import { ROUTES } from "config/path-config";
 
 const useUserLogout = () => {
-  const router = useRouter();
-
   const logOut = async () => {
     try {
-      await fetch("/api/auth/logout");
+      await signOut({ redirectTo: ROUTES.HOME });
 
       toast.success(USER_LOGOUT_TOAST.SUCCESS_TITLE, {
         description: USER_LOGOUT_TOAST.SUCCESS_DESCRIPTION,
@@ -18,8 +17,6 @@ const useUserLogout = () => {
         code: SUCCESS_CODES.LOGOUT_SUCCESS,
         message: USER_LOGOUT_LOG.SUCCESS_MESSAGE,
       });
-
-      router.push("/");
     } catch (error) {
       toast.error(USER_LOGOUT_TOAST.FAIL_TITLE, {
         description: USER_LOGOUT_TOAST.FAIL_DESCRIPTION,
