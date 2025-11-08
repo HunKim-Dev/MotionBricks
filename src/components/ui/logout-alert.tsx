@@ -36,7 +36,9 @@ const LogoutAlert = ({ logOut }: LogoutAlertProps) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{LOGOUT_ALERT_TEXT.TITLE}</AlertDialogTitle>
-          <AlertDialogDescription>{LOGOUT_ALERT_TEXT.DESCRIPTION}</AlertDialogDescription>
+          <AlertDialogDescription className="whitespace-pre-line">
+            {LOGOUT_ALERT_TEXT.DESCRIPTION}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{LOGOUT_ALERT_TEXT.CANCEL_BUTTON}</AlertDialogCancel>
