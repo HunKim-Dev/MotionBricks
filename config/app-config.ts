@@ -17,6 +17,7 @@ export const ERROR_CODES = {
   NETWORK_ERROR: "NETWORK_ERROR",
   SAVE_ERROR: "SAVE_ERROR",
   LOAD_ERROR: "LOAD_ERROR",
+  AUTH_ERROR: "AUTH_ERROR",
 };
 
 export const SUCCESS_CODES = {
@@ -24,6 +25,7 @@ export const SUCCESS_CODES = {
   SAVE_SUCCESS: "SAVE_SUCCESS",
   LOAD_SUCCESS: "LOAD_SUCCESS",
   LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+  AUTH_SUCCESS: "AUTH_SUCCESS",
 };
 
 export const LOAD_USER_ERROR_MESSAGES = "유저 정보 불러오는 중 네트워크 오류 발생:";
@@ -73,6 +75,16 @@ export const USER_LOGOUT_TOAST = {
 export const USER_LOGOUT_LOG = {
   SUCCESS_MESSAGE: "로그아웃 성공",
   EXCEPTION_MESSAGE: "로그아웃 중 오류 발생",
+};
+
+export const USER_LOGIN_TOAST = {
+  FAIL_TITLE: "로그인 에러",
+  FAIL_DESCRIPTION: "로그인 중 문제가 발생했습니다.",
+};
+
+export const USER_LOGIN_LOG = {
+  SUCCESS_MESSAGE: "로그인 성공",
+  EXCEPTION_MESSAGE: "로그인 중 오류 발생",
 };
 
 export const LOGOUT_ALERT_TEXT = {
