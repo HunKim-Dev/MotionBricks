@@ -66,16 +66,33 @@
 # 🧱 Preview
 
 ![Image](https://github.com/user-attachments/assets/4a80cb64-d4e5-41cb-8438-24019d60b7c3)
+<br> 로그인 하는 장면
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/4e916803-148f-4aa6-8d2a-2c10cef456da" width="70%" alt="브릭 조립 시연 GIF" width="50%"
-/>
-</p>
+<div align="center" style="border: 2px solid #e5e7eb; border-radius: 14px; padding: 28px; background-color: #fafafa; display: inline-block; width: 95%;">
+  <!-- 첫 번째 GIF -->
+  <div style="border: 1px solid #d1d5db; border-radius: 10px; padding: 16px; text-align: center; background-color: white; margin-bottom: 28px;">
+    <img 
+      src="https://github.com/user-attachments/assets/4e916803-148f-4aa6-8d2a-2c10cef456da"
+      alt="브릭 조립 시연 GIF"
+      style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;"
+    />
+    <p style="margin-top: 10px; font-size: 15px; color: #4b5563;">
+      브릭을 조립하고 배치하는 기능 시연
+    </p>
+  </div>
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/71f7a947-ecef-4610-adff-9127c16d8dd1" width="70%" alt="손 제스처 시연 GIF" width="50%"
-/>
-</p>
+  <!-- 두 번째 GIF -->
+  <div style="border: 1px solid #d1d5db; border-radius: 10px; padding: 16px; text-align: center; background-color: white;">
+    <img 
+      src="https://github.com/user-attachments/assets/71f7a947-ecef-4610-adff-9127c16d8dd1"
+      alt="손 제스처 시연 GIF"
+      style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;"
+    />
+    <p style="margin-top: 10px; font-size: 15px; color: #4b5563;">
+      손 제스처로 브릭을 선택·이동하는 기능 시연
+    </p>
+  </div>
+</div>
 
 <br>
 
@@ -106,11 +123,17 @@ MotionBricks 프로젝트의 출발점은 물리적 제약 없이 레고를 조�
 ![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=three.js&logoColor=fff)
 &nbsp;
 ![React Three Fiber](https://img.shields.io/badge/React%20Three%20Fiber-000000?style=flat-square&logo=react&logoColor=61DAFB)
+&nbsp;
 ![MediaPipe](https://img.shields.io/badge/MediaPipe-FFB74D?style=flat-square&logo=google&logoColor=fff)
 &nbsp;
+![shadcn/ui](https://img.shields.io/badge/shadcn/ui-18181B?style=flat-square&logo=shadcnui&logoColor=fff)
+&nbsp;
 ![Zustand](https://img.shields.io/badge/Zustand-7856FF?style=flat-square&logo=zustand&logoColor=fff)
+&nbsp;
 
 #### Backend
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=fff)
+&nbsp;
 ![Auth.js](https://img.shields.io/badge/Auth.js-0A0A0A?style=flat-square&logo=auth0&logoColor=white)
 &nbsp;
 ![Google OAuth](https://img.shields.io/badge/Google%20OAuth-4285F4?style=flat-square&logo=google&logoColor=white)
@@ -120,6 +143,13 @@ MotionBricks 프로젝트의 출발점은 물리적 제약 없이 레고를 조�
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 &nbsp;
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+&nbsp;
+
+#### Tools  
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=fff)
+&nbsp;
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=prettier&logoColor=000)
+&nbsp;
 
 
 <br>
