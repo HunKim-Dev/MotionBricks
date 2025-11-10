@@ -65,35 +65,18 @@
 
 # 🧱 Preview
 
-![Image](https://github.com/user-attachments/assets/4a80cb64-d4e5-41cb-8438-24019d60b7c3)
-<br> 로그인 하는 장면
+<!-- 🔹 첫 번째 이미지: 중앙 정렬 단독 배치 -->
+| **랜딩 페이지에서 접속** |
+|:--:|
+| ![랜딩 페이지에서 접속](https://github.com/user-attachments/assets/4a80cb64-d4e5-41cb-8438-24019d60b7c3) |
 
-<div align="center" style="border: 2px solid #e5e7eb; border-radius: 14px; padding: 28px; background-color: #fafafa; display: inline-block; width: 95%;">
-  <!-- 첫 번째 GIF -->
-  <div style="border: 1px solid #d1d5db; border-radius: 10px; padding: 16px; text-align: center; background-color: white; margin-bottom: 28px;">
-    <img 
-      src="https://github.com/user-attachments/assets/4e916803-148f-4aa6-8d2a-2c10cef456da"
-      alt="브릭 조립 시연 GIF"
-      style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;"
-    />
-    <p style="margin-top: 10px; font-size: 15px; color: #4b5563;">
-      브릭을 조립하고 배치하는 기능 시연
-    </p>
-  </div>
 
-  <!-- 두 번째 GIF -->
-  <div style="border: 1px solid #d1d5db; border-radius: 10px; padding: 16px; text-align: center; background-color: white;">
-    <img 
-      src="https://github.com/user-attachments/assets/71f7a947-ecef-4610-adff-9127c16d8dd1"
-      alt="손 제스처 시연 GIF"
-      style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;"
-    />
-    <p style="margin-top: 10px; font-size: 15px; color: #4b5563;">
-      손 제스처로 브릭을 선택·이동하는 기능 시연
-    </p>
-  </div>
-</div>
+---
 
+<!-- 🔹 두 번째 + 세 번째 이미지: 가로 병렬 정렬 -->
+| **손 제스처로 브릭을 선택·이동하는 기능 시연** | **브릭을 조립하고 배치하는 기능 시연** |
+|:--:|:--:|
+| ![손 제스처 시연 GIF](https://github.com/user-attachments/assets/71f7a947-ecef-4610-adff-9127c16d8dd1) | ![브릭 조립 시연 GIF](https://github.com/user-attachments/assets/4e916803-148f-4aa6-8d2a-2c10cef456da) |
 <br>
 
 # <a id="motivation">❤️‍🔥 Motivation</a>
@@ -465,7 +448,9 @@ Gesture Recognizer 모델은 카메라로 촬영된 손의 각 관절(총 21개)
 
 하지만 고정된 위치에 조립된 브릭이 있으면 소환된 브릭이 겹쳐서 사용자의 의도에 맞지 않게 동작을 하였습니다. 따라서 고스트 브릭이 커서를 따라가 사용자가 원하는 위치에 브릭이 소환되게 만들었습니다.
 
-  ![Adobe Express - 화면 기록 2025-11-09 오후 10 31 10](https://github.com/user-attachments/assets/28a78288-b5de-47d0-9374-38e60e3c4060)
+| **고스트 브릭이 커서를 따라오게 구현** |
+|:---------------------------------------------------------------:|
+| ![Adobe Express - 화면 기록 2025-11-09 오후 10 31 10](https://github.com/user-attachments/assets/28a78288-b5de-47d0-9374-38e60e3c4060) |
 
 
 
@@ -473,16 +458,15 @@ Gesture Recognizer 모델은 카메라로 촬영된 손의 각 관절(총 21개)
 1. 화면 좌표를 3D 공간 좌표로 변환
 사용자의 입력(마우스 또는 손 제스처)으로 들어오는 화면상의 (x, y) 좌표를 그대로 사용하는 대신 이를 3D 공간상의 실제 좌표로 변환하는 과정을 거칩니다.
 화면에서 손이나 마우스를 움직이면 보통 (x, y) 좌표로만 인식됩니다. 하지만 3D 공간에서는 ‘깊이’(z축) 가 추가되기 때문에, 그 좌표만으로는 브릭이 공간의 어디쯤에 있어야 하는지를 알 수 없었습니다.
-
 이 문제를 해결하기 위해 화면 좌표를 3D 공간의 실제 위치로 바꾸는 과정을 거칩니다.
 이를 쉽게 말하면 화면 위의 포인터가 3D 공간의 어느 지점에 닿는지 계산하는 것이 관건이였습니다.
-
 카메라에서 가상의 선(광선)을 쏴서 그 광선이 바닥면과 만나는 지점을 찾는 방식이 사용하여 3D 공간의 좌표를 구할 수 있었습니다. 
 
 
 2. 실시간 위치 갱신으로 커서 추적
 카메라에서 가상의 선(광선)을 쏴서 그 광선이 바닥면과 만나는 지점을 찾는 방식이 사용하여 3D 공간의 좌표를 얻었으니 고스트 브릭을 계산한 좌표에 갱신을 해줬습니다. 
 이 좌표가 바뀔 때마다 고스트 브릭의 위치를 즉시 갱신해준 결과, 브릭이 커서를 따라 움직이는 것처럼 보이게 구현하였습니다.
+
 
 결과적으로 커서가 이동하는 순간마다 고스트 브릭이 실시간으로 따라오면서 브릭이 실제로 놓일 위치를 정확히 시각화합니다.
 
@@ -522,7 +506,7 @@ Gesture Recognizer 모델은 카메라로 촬영된 손의 각 관절(총 21개)
 
 다만 손 제스처 인식 과정에서 조명이나 배경, 사용자 거리 등의 환경 요인에 따라 인식률이 달라지는 문제가 있었습니다.
 이를 개선하기 위해 조명 보정, 배경 제거 같은 입력 데이터 전처리 로직을 적용하거나, 인퍼런스 속도와 렌더링 주기를 최적화하는 방법을 고려하게 되었습니다.
-또한 제스처 커서가 간헐적으로 끊기는 현상은 인식 주기와 렌더 루프 간의 타이밍 문제로 분석되어, 추후에는 Web Worker 분리나 비동기 처리 구조로 개선할 계획입니다.
+또한 제스처 커서가 간헐적으로 끊기는 현상은 인식 주기와 렌더 루프 간의 타이밍 문제로 분석되어, 추후에 개선할 계획입니다.
  
 <a id="보완-및-추가-구현-계획">보완 및 추가 구현 계획</a>:
   * 서버 구축을 통해 사용자의 조립 데이터를 자동 저장 및 불러오기(JSON 기반) 기능으로 확장합니다.
