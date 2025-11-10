@@ -23,6 +23,7 @@ import useBricksSave from "@/hooks/use-brick-save";
 import useBricksLoad from "@/hooks/use-brick-load";
 import useUserLogout from "@/hooks/use-user-logout";
 import LogoutAlert from "./logout-alert";
+import GuideButton from "../guide/guide.button";
 
 const AppSidebar = () => {
   const { data: session } = useSession();
@@ -44,7 +45,8 @@ const AppSidebar = () => {
       <SidebarHeader className="px-3 py-4">
         <SidebarTrigger className="absolute top-2 -left-8 z-20 h-6 w-6" />
 
-        <div className="flex items-center gap-5 justify-end">
+        <div className="flex items-center gap-5.5 justify-end mr-1.5">
+          <GuideButton />
           {isLoggedIn ? (
             <>
               {tooltipButtons.map((tooltipButton) => (
