@@ -1,16 +1,22 @@
 "use client";
 
 import useUserLogin from "@/hooks/use-user-login";
+import LoadingSpinner from "../ui/loading-spinner";
 
 type GoogleLoginButtonProps = {
   text: string;
 };
 
 const GoogleLoginButton = ({ text }: GoogleLoginButtonProps) => {
-  const { login } = useUserLogin();
+  const { login, isLoading } = useUserLogin();
 
   return (
-    <button type="button" className="gsi-material-button w-full" onClick={login}>
+    <button
+      type="button"
+      className="gsi-material-button w-full"
+      onClick={login}
+      disabled={isLoading}
+    >
       <div className="gsi-material-button-state" />
       <div className="gsi-material-button-content-wrapper">
         <div className="gsi-material-button-icon">
@@ -35,7 +41,9 @@ const GoogleLoginButton = ({ text }: GoogleLoginButtonProps) => {
           </svg>
         </div>
 
-        <span className="gsi-material-button-contents">{text}</span>
+        <span className="gsi-material-button-contents">
+          {isLoading ? <LoadingSpinner /> : text}
+        </span>
 
         <span className="sr-only">{text}</span>
       </div>
