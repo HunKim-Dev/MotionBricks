@@ -14,19 +14,25 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { LOGOUT_ALERT_TEXT } from "config/app-config";
+import LoadingSpinner from "./loading-spinner";
 
 type LogoutAlertProps = {
   logOut: () => void;
+  isLoading: boolean;
 };
 
-const LogoutAlert = ({ logOut }: LogoutAlertProps) => {
+const LogoutAlert = ({ logOut, isLoading }: LogoutAlertProps) => {
   return (
     <AlertDialog>
       <Tooltip>
         <AlertDialogTrigger asChild>
           <TooltipTrigger asChild>
-            <button type="button" className="inline-flex items-center justify-center h-5 w-5">
-              <Power className="h-5 w-5" />
+            <button
+              type="button"
+              className="inline-flex items-center justify-center h-5 w-5"
+              disabled={isLoading}
+            >
+              {isLoading ? <LoadingSpinner /> : <Power className="h-5 w-5" />}
             </button>
           </TooltipTrigger>
         </AlertDialogTrigger>
