@@ -13,6 +13,8 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import { BRICK_CATALOG, BRICK_BAR_IMAGE_SIZE, BRICK_BOX_IMAGES } from "config/brick-config";
 import { BOTTOM_BRICK_DOCK } from "config/ui-config";
+import LoadingSpinner from "./loading-spinner";
+import { useBrickLoadingStore } from "@/store/brick-loading";
 
 type BricksCategory = "all" | "full" | "plate";
 
@@ -21,6 +23,8 @@ const CATALOG_BY_NAME = new Map(BRICK_CATALOG.map((item) => [item.name, item]));
 const BottomBricksDock = () => {
   const [bricksCategory, setBricksCategory] = useState<BricksCategory>("all");
   const [searchedBricks, setSearchedBricks] = useState("");
+
+  const { loadingBrickName, startLoading } = useBrickLoadingStore();
 
   const filteredBricksBoxs = useMemo(() => {
     const searchedValidation = searchedBricks.trim().toLowerCase();
@@ -79,6 +83,8 @@ const BottomBricksDock = () => {
               className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-md border bg-muted/60 mt-1"
               onClick={() => {
                 const item = CATALOG_BY_NAME.get(box.name);
+                startLoading(box.name);
+
                 window.dispatchEvent(new CustomEvent("ghost-spawn", { detail: item }));
               }}
             >
@@ -90,6 +96,13 @@ const BottomBricksDock = () => {
                 className="object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-3 bg-background/70" />
+              {loadingBrickName === box.name && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-md bg-white/80">
+                  <div className="scale-150">
+                    <LoadingSpinner />
+                  </div>
+                </div>
+              )}
             </button>
           ))}
           <div className="w-3 shrink-0 md:w-4" />

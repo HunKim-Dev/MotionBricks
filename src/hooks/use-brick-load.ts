@@ -1,13 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 import { BRICK_LOAD_TOAST, BRICK_LOAD_LOG, ERROR_CODES, SUCCESS_CODES } from "config/app-config";
 
 const useBricksLoad = (isLoggedIn: boolean) => {
-  const bricksLoad = async () => {
-    try {
-      if (!isLoggedIn) return;
+  const [isLoading, setIsLoading] = useState(false);
 
+  const bricksLoad = async () => {
+    if (isLoading) return;
+    if (!isLoggedIn) return;
+
+    setIsLoading(true);
+
+    try {
       const loadResponse = await fetch("/api/users/me/bricks");
 
       if (!loadResponse.ok) {
@@ -39,10 +45,12 @@ const useBricksLoad = (isLoggedIn: boolean) => {
         message: BRICK_LOAD_LOG.EXCEPTION_MESSAGE,
         error,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return bricksLoad;
+  return { bricksLoad, isLoading };
 };
 
 export default useBricksLoad;
