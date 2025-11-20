@@ -24,6 +24,7 @@ import useBricksLoad from "@/hooks/use-brick-load";
 import useUserLogout from "@/hooks/use-user-logout";
 import LogoutAlert from "./logout-alert";
 import GuideButton from "../guide/guide.button";
+import LoadingSpinner from "./loading-spinner";
 
 const AppSidebar = () => {
   const { data: session } = useSession();
@@ -31,13 +32,13 @@ const AppSidebar = () => {
   const isLoggedIn = Boolean(session?.user?.email);
   const userName = session?.user?.name;
 
-  const bricksSave = useBricksSave(isLoggedIn);
-  const bricksLoad = useBricksLoad(isLoggedIn);
-  const { logOut } = useUserLogout();
+  const { bricksSave, isSaving } = useBricksSave(isLoggedIn);
+  const { bricksLoad, isLoading } = useBricksLoad(isLoggedIn);
+  const { logOut, isLogOut } = useUserLogout();
 
   const tooltipButtons = [
-    { text: TOOLTIP_BUTTONS.SAVE_LABAL, icon: Save, onClick: bricksSave },
-    { text: TOOLTIP_BUTTONS.LAOD_LABAL, icon: Upload, onClick: bricksLoad },
+    { text: TOOLTIP_BUTTONS.SAVE_LABAL, icon: Save, onClick: bricksSave, loading: isSaving },
+    { text: TOOLTIP_BUTTONS.LAOD_LABAL, icon: Upload, onClick: bricksLoad, loading: isLoading },
   ];
 
   return (
@@ -57,14 +58,18 @@ const AppSidebar = () => {
                       onClick={tooltipButton.onClick}
                       className="inline-flex items-center justify-center h-5 w-5"
                     >
-                      <tooltipButton.icon className="h-5 w-5" />
+                      {tooltipButton.loading ? (
+                        <LoadingSpinner />
+                      ) : (
+                        <tooltipButton.icon className="h-5 w-5" />
+                      )}
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>{tooltipButton.text}</TooltipContent>
                 </Tooltip>
               ))}
 
-              <LogoutAlert logOut={logOut} />
+              <LogoutAlert logOut={logOut} isLoading={isLogOut} />
             </>
           ) : (
             <div className="text-xs text-muted-foreground">{LOGIN_DESCRIPTION}</div>
