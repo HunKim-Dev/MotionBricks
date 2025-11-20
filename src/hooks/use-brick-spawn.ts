@@ -4,6 +4,7 @@ import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDraw
 import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
 import { markBrickRoot, cloneBrickMaterials } from "@/utils/ldraw-clone-materials";
+import { useBrickLoadingStore } from "@/store/brick-loading";
 
 type BrickSpawnParams = {
   setLoadedGroups: React.Dispatch<React.SetStateAction<THREE.Group[]>>;
@@ -18,6 +19,8 @@ type SpawnBrickEvent = {
 };
 
 const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
+  const finishLoading = useBrickLoadingStore((state) => state.finishLoading);
+
   useEffect(() => {
     const loader = new LDrawLoader();
 
@@ -58,12 +61,14 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
             detail: { uuid: group.uuid, name },
           })
         );
+
+        finishLoading();
       });
     };
 
     window.addEventListener("spawn-brick", onSpawn);
     return () => window.removeEventListener("spawn-brick", onSpawn);
-  }, [setLoadedGroups, addPart]);
+  }, [setLoadedGroups, addPart, finishLoading]);
 };
 
 export default useBrickSpawn;
