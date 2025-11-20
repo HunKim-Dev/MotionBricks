@@ -1,13 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 import { BRICK_SAVE_TOAST, BRICK_SAVE_LOG, ERROR_CODES, SUCCESS_CODES } from "config/app-config";
 
 const useBricksSave = (isLoggedIn: boolean) => {
-  const bricksSave = async () => {
-    try {
-      if (!isLoggedIn) return;
+  const [isSaving, setIsSaving] = useState(false);
 
+  const bricksSave = async () => {
+    if (isSaving) return;
+    if (!isLoggedIn) return;
+
+    setIsSaving(true);
+
+    try {
       const saveResponse = await fetch("/api/users/me/bricks");
 
       if (!saveResponse.ok) {
@@ -39,10 +45,12 @@ const useBricksSave = (isLoggedIn: boolean) => {
         message: BRICK_SAVE_LOG.EXCEPTION_MESSAGE,
         error,
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  return bricksSave;
+  return { bricksSave, isSaving };
 };
 
 export default useBricksSave;
