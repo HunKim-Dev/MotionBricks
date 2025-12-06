@@ -42,10 +42,12 @@ export const BRICK_SAVE_TOAST = {
   SUCCESS_DESCRIPTION: "현재 작업 중인 브릭이 저장되었습니다.",
   NETWORK_ERROR_TITLE: "에러 발생",
   NETWORK_ERROR_DESCRIPTION: "네트워크 연결을 확인해주세요.",
+  NOT_READY: "화면 준비가 완료되지 않았습니다. 잠시 후 다시 시도해주세요.",
+  NO_BRICKS: "저장할 브릭이 없습니다.",
 };
 
 export const BRICK_SAVE_LOG = {
-  FAIL_MESSAGE: "브릭 저장 실패",
+  FAIL_MESSAGE: "유저 ID가 없습니다. 로그인 후 이용해주세요.",
   SUCCESS_MESSAGE: "브릭 저장 완료",
   EXCEPTION_MESSAGE: "브릭 저장 중 오류 발생:",
 };

@@ -17,6 +17,7 @@ import useVictoryDragState from "@/hooks/use-victory-drag-state";
 import useGhostBrickFollower from "@/hooks/use-ghost-brick-follower";
 import ToolbarAnchorEmitter from "@/components/workshop/tool-bar-anchor-emitter";
 import BrickRotateBinding from "./brick-rotate-binding";
+import useSceneExporter from "@/hooks/use-scene-exporter";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -25,6 +26,7 @@ const LDrawModel = () => {
   const addPart = useBrickPartsStore((state) => state.addPart);
   const deletePart = useBrickPartsStore((state) => state.deletePart);
   const selectPart = useBrickPartsStore((state) => state.selectPart);
+  const brickParts = useBrickPartsStore((state) => state.brickParts);
 
   useGhostBrickFollower();
 
@@ -59,6 +61,8 @@ const LDrawModel = () => {
     enabled: victoryActive,
     snapStep: STUD_UNIT,
   });
+
+  useSceneExporter({ loadedGroups, brickParts });
 
   return (
     <>

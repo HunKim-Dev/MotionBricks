@@ -2,28 +2,43 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { BRICK_SAVE_TOAST, BRICK_SAVE_LOG, ERROR_CODES, SUCCESS_CODES } from "config/app-config";
+import { BRICK_SAVE_TOAST } from "config/app-config";
+import { useSceneExporterStore } from "@/store/scene-exporter";
 
 const useBricksSave = (isLoggedIn: boolean) => {
   const [isSaving, setIsSaving] = useState(false);
+  const exportSavedScene = useSceneExporterStore((state) => state.scene);
 
   const bricksSave = async () => {
     if (isSaving) return;
     if (!isLoggedIn) return;
 
+    if (!exportSavedScene) {
+      toast.error(BRICK_SAVE_TOAST.FAIL_TITLE, {
+        description: BRICK_SAVE_TOAST.NOT_READY,
+      });
+      return;
+    }
+
+    if (exportSavedScene.bricks.length === 0) {
+      toast.error(BRICK_SAVE_TOAST.FAIL_TITLE, {
+        description: BRICK_SAVE_TOAST.NO_BRICKS,
+      });
+      return;
+    }
+
     setIsSaving(true);
 
     try {
-      const saveResponse = await fetch("/api/users/me/bricks");
+      const saveResponse = await fetch("/api/users/me/bricks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: exportSavedScene }),
+      });
 
       if (!saveResponse.ok) {
         toast.error(BRICK_SAVE_TOAST.FAIL_TITLE, {
           description: BRICK_SAVE_TOAST.FAIL_DESCRIPTION,
-        });
-
-        console.warn({
-          code: ERROR_CODES.SAVE_ERROR,
-          message: BRICK_SAVE_LOG.FAIL_MESSAGE,
         });
         return;
       }
@@ -31,19 +46,9 @@ const useBricksSave = (isLoggedIn: boolean) => {
       toast.success(BRICK_SAVE_TOAST.SUCCESS_TITLE, {
         description: BRICK_SAVE_TOAST.SUCCESS_DESCRIPTION,
       });
-
-      console.log({
-        code: SUCCESS_CODES.SAVE_SUCCESS,
-        message: BRICK_SAVE_LOG.SUCCESS_MESSAGE,
-      });
-    } catch (error) {
+    } catch {
       toast.error(BRICK_SAVE_TOAST.NETWORK_ERROR_TITLE, {
         description: BRICK_SAVE_TOAST.NETWORK_ERROR_DESCRIPTION,
-      });
-      console.warn({
-        code: ERROR_CODES.RESOURCE_NOT_FOUND,
-        message: BRICK_SAVE_LOG.EXCEPTION_MESSAGE,
-        error,
       });
     } finally {
       setIsSaving(false);
