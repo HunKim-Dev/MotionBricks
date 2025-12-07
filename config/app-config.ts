@@ -59,6 +59,8 @@ export const BRICK_LOAD_TOAST = {
   SUCCESS_DESCRIPTION: "저장된 브릭이 성공적으로 불러와졌습니다.",
   NETWORK_ERROR_TITLE: "에러 발생",
   NETWORK_ERROR_DESCRIPTION: "네트워크 연결을 확인해주세요.",
+  NO_BRICKS: "불러올 브릭이 없습니다.",
+  NOT_FOUND_SCENE: "선택한 씬 정보를 찾을 수 없습니다.",
 };
 
 export const BRICK_LOAD_LOG = {

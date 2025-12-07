@@ -129,3 +129,12 @@ export const GUIDE_BUTTON_TEXTS = {
   TITLE: "📖 사용 설명서",
   DESCRIPTION: "손 제스처, 브릭 소환 및 조립, 툴바 사용법을 안내합니다.",
 };
+
+export const SCENE_LOAD_TEXTS = {
+  TITLE: "저장된 씬 불러오기",
+  DESCRIPTION: "불러올 씬의 업데이트 시간을 검색해서 선택할 수 있습니다.",
+  INPUT: "업데이트 시간으로 검색 (예: 2025. 12. 7)",
+  NOT_FOUND: "저장된 씬이 없거나, 검색 조건에 맞는 항목이 없습니다.",
+  BRICK_NUM: "브릭 개수: ",
+  BRICK_COUNT: "개",
+};
