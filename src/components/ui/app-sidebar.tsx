@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import {
   Sidebar,
@@ -25,21 +26,40 @@ import useUserLogout from "@/hooks/use-user-logout";
 import LogoutAlert from "./logout-alert";
 import GuideButton from "../guide/guide.button";
 import LoadingSpinner from "./loading-spinner";
+import SceneLoadDialog from "@/components/workshop/scene-load-dialog";
 
 const AppSidebar = () => {
+  const [isSceneDialogOpen, setIsSceneDialogOpen] = useState(false);
   const { data: session } = useSession();
 
   const isLoggedIn = Boolean(session?.user?.email);
-  const userName = session?.user?.name;
+  const userName = session?.user?.name ?? undefined;
 
   const { bricksSave, isSaving } = useBricksSave(isLoggedIn);
-  const { bricksLoad, isLoading } = useBricksLoad(isLoggedIn);
+  const { LoadSceneList, isLoading, sceneList, loadSceneById } = useBricksLoad(isLoggedIn);
   const { logOut, isLogOut } = useUserLogout();
 
   const tooltipButtons = [
-    { text: TOOLTIP_BUTTONS.SAVE_LABAL, icon: Save, onClick: bricksSave, loading: isSaving },
-    { text: TOOLTIP_BUTTONS.LAOD_LABAL, icon: Upload, onClick: bricksLoad, loading: isLoading },
+    {
+      key: "save",
+      text: TOOLTIP_BUTTONS.SAVE_LABAL,
+      icon: Save,
+      onClick: bricksSave,
+      loading: isSaving,
+    },
+    {
+      key: "load",
+      text: TOOLTIP_BUTTONS.LAOD_LABAL,
+      icon: Upload,
+      onClick: () => {},
+      loading: isLoading,
+    },
   ];
+
+  const handleLoadButtonClick = async () => {
+    await LoadSceneList();
+    setIsSceneDialogOpen(true);
+  };
 
   return (
     <Sidebar side="right" variant="sidebar">
@@ -51,11 +71,13 @@ const AppSidebar = () => {
           {isLoggedIn ? (
             <>
               {tooltipButtons.map((tooltipButton) => (
-                <Tooltip key={tooltipButton.text}>
+                <Tooltip key={tooltipButton.key}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
-                      onClick={tooltipButton.onClick}
+                      onClick={
+                        tooltipButton.key === "load" ? handleLoadButtonClick : tooltipButton.onClick
+                      }
                       className="inline-flex items-center justify-center h-5 w-5"
                     >
                       {tooltipButton.loading ? (
@@ -104,6 +126,12 @@ const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
+      <SceneLoadDialog
+        open={isSceneDialogOpen}
+        onOpenChange={setIsSceneDialogOpen}
+        sceneList={sceneList}
+        onSelectScene={loadSceneById}
+      />
     </Sidebar>
   );
 };
