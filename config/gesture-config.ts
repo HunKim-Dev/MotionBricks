@@ -116,3 +116,5 @@ export const POINTER_ID = 1;
 export const INITIAL_ACTIVE_STATE = false;
 
 export const MAX_SPEED_PX_PER_S = 2200;
+
+export const CURSOR_LERP_FACTOR = 0.35;
