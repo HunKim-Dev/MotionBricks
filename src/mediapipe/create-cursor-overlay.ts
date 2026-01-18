@@ -18,6 +18,7 @@ import {
   CURSOR_BACKFACE_VISIBILITY,
   CURSOR_CONTAIN,
   CURSOR_MOVE_EPSILON_SQ,
+  CURSOR_LERP_FACTOR,
 } from "config/gesture-config";
 
 const createCursorOverlay = () => {
@@ -26,6 +27,13 @@ const createCursorOverlay = () => {
   let visible = false;
   let lastX = Number.NEGATIVE_INFINITY;
   let lastY = Number.NEGATIVE_INFINITY;
+
+  // 60fps 보간을 위한 상태
+  let targetX = 0;
+  let targetY = 0;
+  let renderX = 0;
+  let renderY = 0;
+  let rafId: number | null = null;
 
   Object.assign(element.style, {
     position: CURSOR_POSITION,
@@ -48,28 +56,60 @@ const createCursorOverlay = () => {
 
   document.body.appendChild(element);
 
+  // 60fps 렌더 루프
+  const renderLoop = () => {
+    renderX += (targetX - renderX) * CURSOR_LERP_FACTOR;
+    renderY += (targetY - renderY) * CURSOR_LERP_FACTOR;
+
+    element.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) translate(-50%, -50%)`;
+
+    rafId = requestAnimationFrame(renderLoop);
+  };
+
+  const startRenderLoop = () => {
+    if (rafId === null) {
+      rafId = requestAnimationFrame(renderLoop);
+    }
+  };
+
+  const stopRenderLoop = () => {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  };
+
   const show = () => {
     if (!visible) {
       element.style.opacity = `${CURSOR_OPACITY_VISIBLE}`;
       visible = true;
+      startRenderLoop();
     }
   };
   const hide = () => {
     if (visible) {
       element.style.opacity = `${CURSOR_OPACITY_HIDDEN}`;
       visible = false;
+      stopRenderLoop();
     }
   };
   const move = (cursorX: number, cursorY: number) => {
-    const deletaX = cursorX - lastX;
-    const deletaY = cursorY - lastY;
+    const deltaX = cursorX - lastX;
+    const deltaY = cursorY - lastY;
 
-    if (deletaX * deletaX + deletaY * deletaY < CURSOR_MOVE_EPSILON_SQ) return;
+    if (deltaX * deltaX + deltaY * deltaY < CURSOR_MOVE_EPSILON_SQ) return;
 
     lastX = cursorX;
     lastY = cursorY;
 
-    element.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+    // 첫 이동 시 즉시 위치 설정
+    if (targetX === 0 && targetY === 0) {
+      renderX = cursorX;
+      renderY = cursorY;
+    }
+
+    targetX = cursorX;
+    targetY = cursorY;
 
     window.dispatchEvent(
       new CustomEvent("cursor-move", {
@@ -78,7 +118,10 @@ const createCursorOverlay = () => {
     );
   };
 
-  const destroy = () => element.remove();
+  const destroy = () => {
+    stopRenderLoop();
+    element.remove();
+  };
 
   return { show, hide, move, destroy };
 };
