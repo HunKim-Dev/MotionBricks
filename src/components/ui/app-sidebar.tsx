@@ -20,6 +20,7 @@ import LayersPanel from "@/components/workshop/layers-panel";
 
 import { LANDING_PAGE_TITLE, LOGIN_DESCRIPTION, TOOLTIP_BUTTONS } from "config/app-config";
 import { HAND_START_BUTTON_LABEL, HAND_STOP_BUTTON_LABEL } from "config/ui-config";
+import GestureFeedbackLabel from "@/components/workshop/gesture-feedback-label";
 
 import useBricksSave from "@/hooks/use-brick-save";
 import useBricksLoad from "@/hooks/use-brick-load";
@@ -130,8 +131,9 @@ const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent className="space-y-4.5">
         <SidebarGroup>
-          <div className="px-1 pb-2 text-lg font-medium">
-            {userName ? `${userName}님의 ${LANDING_PAGE_TITLE}` : LANDING_PAGE_TITLE}
+          <div className="px-1 pb-2 text-lg font-medium flex items-center gap-2">
+            <span>{userName ? `${userName}님의 ${LANDING_PAGE_TITLE}` : LANDING_PAGE_TITLE}</span>
+            <GestureFeedbackLabel />
           </div>
           <HandPreview />
           <div className="flex items-center justify-center gap-2 mt-3">
