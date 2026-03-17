@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TransformControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { TransformControls as TransformControlsImpl } from "three-stdlib";
 import { HANDLE_SIZE } from "config/brick-config";
@@ -13,6 +14,19 @@ type Props = {
 
 const BrickMoveControls = ({ object, studStep }: Props) => {
   const transformControlsRef = useRef<TransformControlsImpl | null>(null);
+  const [attached, setAttached] = useState(false);
+
+  useFrame(() => {
+    if (object && !object.parent && attached) {
+      const tc = transformControlsRef.current;
+      if (tc) tc.detach();
+      setAttached(false);
+    }
+  });
+
+  useEffect(() => {
+    setAttached(!!object?.parent);
+  }, [object]);
 
   useEffect(() => {
     const transformControls = transformControlsRef.current;
