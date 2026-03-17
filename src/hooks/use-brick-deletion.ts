@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import * as THREE from "three";
 import type { Dispatch, SetStateAction } from "react";
+import { useBrickPartsStore } from "@/store/brick-parts";
+import { useUndoRedoStore } from "@/store/undo-redo";
+import { BRICK_CATALOG } from "config/brick-config";
 
 type BrickDeletionParams = {
   scene: THREE.Scene;
@@ -10,6 +13,8 @@ type BrickDeletionParams = {
   deletePart: (uuid: string) => void;
   selectedObjectRef: { current: THREE.Object3D | null };
 };
+
+type DeleteBrickEvent = { uuid: string; _skipUndo?: boolean };
 
 const useBrickDeletion = ({
   scene,
@@ -21,7 +26,7 @@ const useBrickDeletion = ({
 }: BrickDeletionParams) => {
   useEffect(() => {
     const deletedBrick = (event: Event) => {
-      const { uuid: deletedBrickUuid } = (event as CustomEvent<{ uuid: string }>).detail;
+      const { uuid: deletedBrickUuid, _skipUndo } = (event as CustomEvent<DeleteBrickEvent>).detail;
       if (!deletedBrickUuid) return;
 
       const sceneObject = scene.getObjectByProperty(
@@ -29,6 +34,33 @@ const useBrickDeletion = ({
         deletedBrickUuid
       ) as THREE.Object3D | null;
       if (!sceneObject) return;
+
+      if (!_skipUndo) {
+        const brickEntity = useBrickPartsStore
+          .getState()
+          .brickParts.find((b) => b.uuid === deletedBrickUuid);
+
+        if (brickEntity) {
+          const catalogItem = BRICK_CATALOG.find((c) => c.id === brickEntity.id);
+          let colorHex: string | null = null;
+          sceneObject.traverse((child) => {
+            if (!colorHex && child instanceof THREE.Mesh) {
+              const mat = child.material as THREE.MeshStandardMaterial | null;
+              if (mat?.color) colorHex = "#" + mat.color.getHexString();
+            }
+          });
+
+          useUndoRedoStore.getState().push({
+            type: "delete",
+            uuid: deletedBrickUuid,
+            brickEntity,
+            partPath: catalogItem?.path ?? "",
+            position: [sceneObject.position.x, sceneObject.position.y, sceneObject.position.z],
+            rotation: [sceneObject.rotation.x, sceneObject.rotation.y, sceneObject.rotation.z],
+            color: colorHex,
+          });
+        }
+      }
 
       scene.remove(sceneObject);
 
