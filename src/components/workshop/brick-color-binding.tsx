@@ -3,6 +3,7 @@
 import type { RefObject } from "react";
 import * as THREE from "three";
 import { useEffect } from "react";
+import { useUndoRedoStore } from "@/store/undo-redo";
 
 type Props = { selectedRef: RefObject<THREE.Object3D | null> };
 
@@ -38,7 +39,24 @@ const BrickColorBinding = ({ selectedRef }: Props) => {
       const hexColor = (event as CustomEvent<string>).detail;
 
       if (selectedRef.current) {
+        let prevColor: string | null = null;
+        selectedRef.current.traverse((child) => {
+          if (!prevColor && child instanceof THREE.Mesh) {
+            const mat = child.material as THREE.MeshStandardMaterial | null;
+            if (mat?.color) prevColor = "#" + mat.color.getHexString();
+          }
+        });
+
         setObjectColor(selectedRef.current, hexColor);
+
+        if (prevColor) {
+          useUndoRedoStore.getState().push({
+            type: "color",
+            uuid: selectedRef.current.uuid,
+            prevColor,
+            nextColor: hexColor,
+          });
+        }
       }
     };
     window.addEventListener("brick-color-change", colorChange);
