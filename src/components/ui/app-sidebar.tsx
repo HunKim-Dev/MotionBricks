@@ -13,7 +13,8 @@ import {
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Save, Upload } from "lucide-react";
+import { Save, Upload, Undo2, Redo2 } from "lucide-react";
+import { useUndoRedoStore } from "@/store/undo-redo";
 import HandPreview from "@/components/workshop/hand-preview";
 import LayersPanel from "@/components/workshop/layers-panel";
 
@@ -34,6 +35,9 @@ const AppSidebar = () => {
 
   const isLoggedIn = Boolean(session?.user?.email);
   const userName = session?.user?.name ?? undefined;
+
+  const canUndo = useUndoRedoStore((s) => s.pointer >= 0);
+  const canRedo = useUndoRedoStore((s) => s.pointer < s.history.length - 1);
 
   const { bricksSave, isSaving } = useBricksSave(isLoggedIn);
   const { LoadSceneList, isLoading, sceneList, loadSceneById } = useBricksLoad(isLoggedIn);
@@ -68,6 +72,32 @@ const AppSidebar = () => {
 
         <div className="flex items-center gap-5.5 justify-end mr-1.5">
           <GuideButton />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                disabled={!canUndo}
+                onClick={() => window.dispatchEvent(new Event("undo"))}
+                className="inline-flex items-center justify-center h-5 w-5 disabled:opacity-30"
+              >
+                <Undo2 className="h-5 w-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{TOOLTIP_BUTTONS.UNDO_LABEL}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                disabled={!canRedo}
+                onClick={() => window.dispatchEvent(new Event("redo"))}
+                className="inline-flex items-center justify-center h-5 w-5 disabled:opacity-30"
+              >
+                <Redo2 className="h-5 w-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{TOOLTIP_BUTTONS.REDO_LABEL}</TooltipContent>
+          </Tooltip>
           {isLoggedIn ? (
             <>
               {tooltipButtons.map((tooltipButton) => (

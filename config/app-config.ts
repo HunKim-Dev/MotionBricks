@@ -33,6 +33,8 @@ export const LOAD_USER_ERROR_MESSAGES = "유저 정보 불러오는 중 네트�
 export const TOOLTIP_BUTTONS = {
   SAVE_LABAL: "저장",
   LAOD_LABAL: "불러오기",
+  UNDO_LABEL: "되돌리기",
+  REDO_LABEL: "다시 실행",
 };
 
 export const BRICK_SAVE_TOAST = {
