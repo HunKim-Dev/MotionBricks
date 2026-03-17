@@ -13,12 +13,14 @@ import {
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Save, Upload } from "lucide-react";
+import { Save, Upload, Undo2, Redo2 } from "lucide-react";
+import { useUndoRedoStore } from "@/store/undo-redo";
 import HandPreview from "@/components/workshop/hand-preview";
 import LayersPanel from "@/components/workshop/layers-panel";
 
 import { LANDING_PAGE_TITLE, LOGIN_DESCRIPTION, TOOLTIP_BUTTONS } from "config/app-config";
 import { HAND_START_BUTTON_LABEL, HAND_STOP_BUTTON_LABEL } from "config/ui-config";
+import GestureFeedbackLabel from "@/components/workshop/gesture-feedback-label";
 
 import useBricksSave from "@/hooks/use-brick-save";
 import useBricksLoad from "@/hooks/use-brick-load";
@@ -34,6 +36,9 @@ const AppSidebar = () => {
 
   const isLoggedIn = Boolean(session?.user?.email);
   const userName = session?.user?.name ?? undefined;
+
+  const canUndo = useUndoRedoStore((s) => s.pointer >= 0);
+  const canRedo = useUndoRedoStore((s) => s.pointer < s.history.length - 1);
 
   const { bricksSave, isSaving } = useBricksSave(isLoggedIn);
   const { LoadSceneList, isLoading, sceneList, loadSceneById } = useBricksLoad(isLoggedIn);
@@ -68,6 +73,32 @@ const AppSidebar = () => {
 
         <div className="flex items-center gap-5.5 justify-end mr-1.5">
           <GuideButton />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                disabled={!canUndo}
+                onClick={() => window.dispatchEvent(new Event("undo"))}
+                className="inline-flex items-center justify-center h-5 w-5 disabled:opacity-30"
+              >
+                <Undo2 className="h-5 w-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{TOOLTIP_BUTTONS.UNDO_LABEL}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                disabled={!canRedo}
+                onClick={() => window.dispatchEvent(new Event("redo"))}
+                className="inline-flex items-center justify-center h-5 w-5 disabled:opacity-30"
+              >
+                <Redo2 className="h-5 w-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{TOOLTIP_BUTTONS.REDO_LABEL}</TooltipContent>
+          </Tooltip>
           {isLoggedIn ? (
             <>
               {tooltipButtons.map((tooltipButton) => (
@@ -100,8 +131,9 @@ const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent className="space-y-4.5">
         <SidebarGroup>
-          <div className="px-1 pb-2 text-lg font-medium">
-            {userName ? `${userName}님의 ${LANDING_PAGE_TITLE}` : LANDING_PAGE_TITLE}
+          <div className="px-1 pb-2 text-lg font-medium flex items-center gap-2">
+            <span>{userName ? `${userName}님의 ${LANDING_PAGE_TITLE}` : LANDING_PAGE_TITLE}</span>
+            <GestureFeedbackLabel />
           </div>
           <HandPreview />
           <div className="flex items-center justify-center gap-2 mt-3">

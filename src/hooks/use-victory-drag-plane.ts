@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
+import { useUndoRedoStore } from "@/store/undo-redo";
 
 type Params = {
   selectedObject: THREE.Object3D | null;
@@ -21,6 +22,7 @@ export default function useVictoryDragPlane({ selectedObject, enabled, snapStep,
   const selectedStartWorld = useRef(new THREE.Vector3());
   const desiredWorld = useRef(new THREE.Vector3());
   const localTarget = useRef(new THREE.Vector3());
+  const dragStartPos = useRef<[number, number, number] | null>(null);
 
   useEffect(() => {
     if (!enabled || !selectedObject || !camera || !gl) return;
@@ -28,6 +30,11 @@ export default function useVictoryDragPlane({ selectedObject, enabled, snapStep,
     selectedObject.getWorldPosition(selectedStartWorld.current);
     dragPlane.current = new THREE.Plane(new THREE.Vector3(0, 1, 0), -selectedStartWorld.current.y);
     startOffset.current = null;
+    dragStartPos.current = [
+      selectedObject.position.x,
+      selectedObject.position.y,
+      selectedObject.position.z,
+    ];
 
     const onCursorMove = (event: Event) => {
       if (!dragPlane.current || !selectedObject) return;
@@ -78,6 +85,23 @@ export default function useVictoryDragPlane({ selectedObject, enabled, snapStep,
     };
 
     const handleVictoryDragEnd = () => {
+      if (selectedObject && dragStartPos.current) {
+        const prev = dragStartPos.current;
+        const next: [number, number, number] = [
+          selectedObject.position.x,
+          selectedObject.position.y,
+          selectedObject.position.z,
+        ];
+        if (prev[0] !== next[0] || prev[1] !== next[1] || prev[2] !== next[2]) {
+          useUndoRedoStore.getState().push({
+            type: "move",
+            uuid: selectedObject.uuid,
+            prevPosition: prev,
+            nextPosition: next,
+          });
+        }
+      }
+      dragStartPos.current = null;
       startOffset.current = null;
       onEnd?.();
     };

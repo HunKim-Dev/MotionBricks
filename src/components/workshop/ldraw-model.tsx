@@ -19,6 +19,7 @@ import ToolbarAnchorEmitter from "@/components/workshop/tool-bar-anchor-emitter"
 import BrickRotateBinding from "./brick-rotate-binding";
 import useSceneExporter from "@/hooks/use-scene-exporter";
 import useSceneImporter from "@/hooks/use-scene-importer";
+import useUndoRedo from "@/hooks/use-undo-redo";
 
 const LDrawModel = () => {
   const [loadedGroups, setLoadedGroups] = useState<THREE.Group[]>([]);
@@ -64,6 +65,8 @@ const LDrawModel = () => {
     enabled: victoryActive,
     snapStep: STUD_UNIT,
   });
+
+  useUndoRedo({ scene });
 
   useSceneExporter({ loadedGroups, brickParts });
 

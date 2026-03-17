@@ -6,6 +6,7 @@ import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
 import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_CATALOG } from "config/brick-config";
 import { useBrickPartsStore } from "@/store/brick-parts";
+import { useUndoRedoStore } from "@/store/undo-redo";
 import type { SavedScene } from "@/store/scene-exporter";
 import { markBrickRoot, cloneBrickMaterials } from "@/utils/ldraw-clone-materials";
 
@@ -29,6 +30,8 @@ const useSceneImporter = ({ scene, loadedGroups, setLoadedGroups }: Params) => {
     const handleSceneLoad = (event: Event) => {
       const imported = (event as CustomEvent<SavedScene>).detail;
       if (!imported) return;
+
+      useUndoRedoStore.getState().clear();
 
       const { bricks } = imported;
       if (!bricks || bricks.length === 0) {

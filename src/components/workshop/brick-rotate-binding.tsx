@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import * as THREE from "three";
 import { useBrickPartsStore } from "@/store/brick-parts";
+import { useUndoRedoStore } from "@/store/undo-redo";
 
 type Props = { selectedRef: React.RefObject<THREE.Object3D | null> };
 
@@ -29,8 +30,16 @@ const BrickRotateBinding = ({ selectedRef }: Props) => {
       if (!selectedObject) return;
 
       if (axis === "y") {
+        const prevRotationY = selectedObject.rotation.y;
         selectedObject.rotation.y = snap90Degrees(selectedObject.rotation.y + toRadians(deg));
         selectedObject.updateMatrixWorld();
+
+        useUndoRedoStore.getState().push({
+          type: "rotate",
+          uuid: selectedObject.uuid,
+          prevRotationY,
+          nextRotationY: selectedObject.rotation.y,
+        });
       }
     };
 
