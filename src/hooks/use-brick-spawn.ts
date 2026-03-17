@@ -5,17 +5,21 @@ import * as THREE from "three";
 import { LDRAW_PATH, BRICK_RENDER_SCALE, BRICK_RENDER_POSITION } from "config/brick-config";
 import { markBrickRoot, cloneBrickMaterials } from "@/utils/ldraw-clone-materials";
 import { useBrickLoadingStore } from "@/store/brick-loading";
+import { useUndoRedoStore } from "@/store/undo-redo";
 
 type BrickSpawnParams = {
   setLoadedGroups: React.Dispatch<React.SetStateAction<THREE.Group[]>>;
   addPart: (p: { id: string; name: string; uuid: string }) => void;
 };
 
-type SpawnBrickEvent = {
+export type SpawnBrickEvent = {
   id: string;
   name: string;
   path: string;
   position?: [number, number, number];
+  rotation?: [number, number, number];
+  color?: string | null;
+  _skipUndo?: boolean;
 };
 
 const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
@@ -28,7 +32,9 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
     loader.setPartsLibraryPath(LDRAW_PATH);
 
     const onSpawn = (event: Event) => {
-      const { path, name, id, position } = (event as CustomEvent<SpawnBrickEvent>).detail;
+      const { path, name, id, position, rotation, color, _skipUndo } = (
+        event as CustomEvent<SpawnBrickEvent>
+      ).detail;
 
       loader.load(path, (group) => {
         group.scale.set(...BRICK_RENDER_SCALE);
@@ -38,7 +44,11 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
           group.position.set(...BRICK_RENDER_POSITION);
         }
 
-        group.rotateX(Math.PI);
+        if (rotation) {
+          group.rotation.set(...rotation);
+        } else {
+          group.rotateX(Math.PI);
+        }
 
         markBrickRoot(group);
         cloneBrickMaterials(group);
@@ -47,11 +57,24 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
         const partId = fileName;
         group.userData.partId = partId;
 
-        const box = new THREE.Box3().setFromObject(group);
-
-        if (isFinite(box.min.y) && box.min.y !== 0) {
-          group.position.y -= box.min.y;
+        if (color) {
+          group.traverse((child) => {
+            if (!(child instanceof THREE.Mesh)) return;
+            const mat = child.material as THREE.MeshStandardMaterial | null;
+            if (mat?.color) {
+              mat.color.set(color);
+              mat.needsUpdate = true;
+            }
+          });
         }
+
+        if (!rotation) {
+          const box = new THREE.Box3().setFromObject(group);
+          if (isFinite(box.min.y) && box.min.y !== 0) {
+            group.position.y -= box.min.y;
+          }
+        }
+
         setLoadedGroups((prev) => [...prev, group]);
 
         addPart({ id, name, uuid: group.uuid });
@@ -61,6 +84,18 @@ const useBrickSpawn = ({ setLoadedGroups, addPart }: BrickSpawnParams) => {
             detail: { uuid: group.uuid, name },
           })
         );
+
+        if (!_skipUndo) {
+          useUndoRedoStore.getState().push({
+            type: "spawn",
+            uuid: group.uuid,
+            brickEntity: { id, name, uuid: group.uuid },
+            partPath: path,
+            position: [group.position.x, group.position.y, group.position.z],
+            rotation: [group.rotation.x, group.rotation.y, group.rotation.z],
+            color: color ?? null,
+          });
+        }
 
         finishLoading();
       });
