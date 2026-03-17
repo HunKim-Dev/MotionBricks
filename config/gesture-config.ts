@@ -118,3 +118,16 @@ export const INITIAL_ACTIVE_STATE = false;
 export const MAX_SPEED_PX_PER_S = 2200;
 
 export const CURSOR_LERP_FACTOR = 0.35;
+
+export const GESTURE_LABEL_MAP: Record<string, string> = {
+  open_palm: "✋ 보자기",
+  closed_fist: "✊ 주먹",
+  victory: "✌️ 브이",
+  thumb_up: "👍 업",
+  thumbs_up: "👍 업",
+  thumb_down: "👎 다운",
+  thumbs_down: "👎 다운",
+  pointing_up: "☝️ 포인팅",
+  iloveyou: "🤟 아이러브유",
+  none: "",
+};
