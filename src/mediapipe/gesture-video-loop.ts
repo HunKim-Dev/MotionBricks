@@ -24,6 +24,8 @@ const gestureVideoLoop = (
   let rafId: number | null = null;
 
   let lastResults: RecognizeResult | null = null;
+  let freshResults = false;
+  let lastFeedbackName = "";
 
   let lastInferTime = 0;
   let lastDrawTime = 0;
@@ -52,6 +54,20 @@ const gestureVideoLoop = (
         lastInferTime = nowLoop;
         const nowIn = performance.now();
         lastResults = gestureRecognizer.recognizeForVideo(video, nowIn) as RecognizeResult;
+        freshResults = true;
+
+        const topGesture = lastResults.gestures?.[0]?.[0];
+        const gestureName = topGesture?.categoryName?.toLowerCase() ?? "";
+        const feedbackName = gestureName && gestureName !== "none" ? gestureName : "";
+
+        if (feedbackName !== lastFeedbackName) {
+          lastFeedbackName = feedbackName;
+          window.dispatchEvent(
+            new CustomEvent("gesture-feedback", {
+              detail: feedbackName ? { name: feedbackName } : null,
+            })
+          );
+        }
       }
     }
 
@@ -64,9 +80,13 @@ const gestureVideoLoop = (
       }
 
       cursorController.handle(lastResults);
-      mouseDownUp.handle(lastResults);
-      mouseDrag.handle(lastResults);
-      pinchZoom.handle(lastResults);
+
+      if (freshResults) {
+        freshResults = false;
+        mouseDownUp.handle(lastResults);
+        mouseDrag.handle(lastResults);
+        pinchZoom.handle(lastResults);
+      }
     }
 
     rafId = requestAnimationFrame(predictWebcam);
