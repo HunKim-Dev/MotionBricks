@@ -2,6 +2,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { BRICK_SAVE_LOG, ERROR_CODES, SUCCESS_CODES, BRICK_LOAD_LOG } from "config/app-config";
+import { scenePayloadSchema } from "@/validations/scene";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -20,7 +22,34 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    const sceneData = await req.json();
+    if (rateLimit(userId, 10, 60_000)) {
+      return NextResponse.json(
+        {
+          error: {
+            code: ERROR_CODES.SAVE_ERROR,
+            message: BRICK_SAVE_LOG.FAIL_MESSAGE,
+          },
+        },
+        { status: 429 }
+      );
+    }
+
+    const body = await req.json();
+    const parsed = scenePayloadSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          error: {
+            code: ERROR_CODES.SAVE_ERROR,
+            message: BRICK_SAVE_LOG.FAIL_MESSAGE,
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    const sceneData = parsed.data;
     const existingScene = await prisma.scene.findFirst({
       where: { userId },
     });
@@ -46,7 +75,7 @@ export const POST = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (error) {
-    console.error(ERROR_CODES.SAVE_ERROR, error);
+    console.error(ERROR_CODES.SAVE_ERROR, error instanceof Error ? error.message : "Unknown error");
 
     return NextResponse.json(
       {
@@ -77,6 +106,18 @@ export const GET = async () => {
       );
     }
 
+    if (rateLimit(userId, 20, 60_000)) {
+      return NextResponse.json(
+        {
+          error: {
+            code: ERROR_CODES.LOAD_ERROR,
+            message: BRICK_LOAD_LOG.FAIL_MESSAGE,
+          },
+        },
+        { status: 429 }
+      );
+    }
+
     const userScene = await prisma.scene.findMany({
       where: { userId },
       orderBy: { updatedAt: "desc" },
@@ -99,7 +140,7 @@ export const GET = async () => {
       { status: 200 }
     );
   } catch (error) {
-    console.error(ERROR_CODES.SAVE_ERROR, error);
+    console.error(ERROR_CODES.SAVE_ERROR, error instanceof Error ? error.message : "Unknown error");
 
     return NextResponse.json(
       {
